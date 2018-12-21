@@ -15,6 +15,9 @@ namespace YAMLEditor
 {
     public partial class YAMLEditorForm : Form
     {
+        public TreeNode root;
+        public OpenFileDialog dialog;
+        public TreeViewEventArgs e;
         public YAMLEditorForm()
         {
             InitializeComponent();
@@ -27,7 +30,7 @@ namespace YAMLEditor
 
         private void OnOpen( object sender, EventArgs e )
         {
-            var dialog = new OpenFileDialog()
+            dialog = new OpenFileDialog()
                 { Filter = @"Yaml files (*.yaml)|*.yaml|All files (*.*)|*.*", DefaultExt = "yaml" };
             if ( dialog.ShowDialog() == DialogResult.OK )
             {
@@ -35,7 +38,7 @@ namespace YAMLEditor
                 Directory.SetCurrentDirectory( Path.GetDirectoryName( dialog.FileName ) ?? "" );
 
                 mainTreeView.Nodes.Clear();
-                var root = mainTreeView.Nodes.Add( Path.GetFileName( dialog.FileName ) );
+                root = mainTreeView.Nodes.Add( Path.GetFileName( dialog.FileName ) );
                 root.ImageIndex = root.SelectedImageIndex = 3;
                 LoadFile( root, dialog.FileName );
                 root.Expand();
@@ -149,9 +152,14 @@ namespace YAMLEditor
             }
         }
 
-        private void OnAfterSelect( object sender, TreeViewEventArgs e )
+        private void OnAfterSelect(object sender, TreeViewEventArgs e)
         {
             mainPropertyGrid.SelectedObject = e.Node.Tag;
+            e.Node.Tag = mainPropertyGrid.SelectedObject;
+            
+
+
+            Console.WriteLine("item dentro do grid: " + this.mainPropertyGrid);
         }
 
         private void OnDoubleClick( object sender, EventArgs e )
@@ -168,6 +176,32 @@ namespace YAMLEditor
                     mainTabControl.SelectTab( helpTabPage );
                 }
             }
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            mainTreeView.Nodes.Clear();
+            root = mainTreeView.Nodes.Add(Path.GetFileName(dialog.FileName));
+            root.ImageIndex = root.SelectedImageIndex = 3;
+            LoadFile(root, dialog.FileName);
+            root.Expand();
+
+        }
+
+        private void mainPropertyGrid_Click2(object sender, EventArgs e)
+        {
+           Console.WriteLine("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        }
+
+        private void mainPropertyGrid_Scroll(object sender, ScrollEventArgs e)
+        {
+
+        }
+
+        private void mainPropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            
+            Console.WriteLine("valor sender: " + e.ChangedItem.Value);
         }
     }
 }
