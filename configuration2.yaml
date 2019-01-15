@@ -58,7 +58,15 @@ sun:
 sensor:
   # Weather prediction
   - platform: yr
+  - data1232: filho
+  - data12: filho
 
+
+sensor12:
+  # Weather prediction
+  - platform: yr
+  - data1232: filho
+  - data12: filho
 # Text to speech
 tts:
   - platform: google
@@ -75,3 +83,5 @@ cloud:
 group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
+
+

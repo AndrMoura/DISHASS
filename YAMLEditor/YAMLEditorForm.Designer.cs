@@ -78,9 +78,14 @@
             this.mainImageList = new System.Windows.Forms.ImageList(this.components);
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tagLabel = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.textBoxValue = new System.Windows.Forms.TextBox();
             this.mainPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.helpTabPage = new System.Windows.Forms.TabPage();
             this.mainWebBrowser = new System.Windows.Forms.WebBrowser();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.mainMenuStrip.SuspendLayout();
             this.mainToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitContainer)).BeginInit();
@@ -103,7 +108,7 @@
             this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.mainMenuStrip.Name = "mainMenuStrip";
             this.mainMenuStrip.Padding = new System.Windows.Forms.Padding(3, 1, 0, 1);
-            this.mainMenuStrip.Size = new System.Drawing.Size(747, 24);
+            this.mainMenuStrip.Size = new System.Drawing.Size(695, 24);
             this.mainMenuStrip.TabIndex = 0;
             this.mainMenuStrip.Text = "menuStrip1";
             // 
@@ -337,7 +342,7 @@
             this.mainStatusStrip.Location = new System.Drawing.Point(0, 384);
             this.mainStatusStrip.Name = "mainStatusStrip";
             this.mainStatusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 8, 0);
-            this.mainStatusStrip.Size = new System.Drawing.Size(747, 22);
+            this.mainStatusStrip.Size = new System.Drawing.Size(695, 22);
             this.mainStatusStrip.TabIndex = 1;
             this.mainStatusStrip.Text = "statusStrip1";
             // 
@@ -354,10 +359,12 @@
             this.pasteToolStripButton,
             this.toolStripSeparator7,
             this.helpToolStripButton,
-            this.toolStripButton1});
+            this.toolStripButton1,
+            this.toolStripButton2,
+            this.toolStripButton3});
             this.mainToolStrip.Location = new System.Drawing.Point(0, 24);
             this.mainToolStrip.Name = "mainToolStrip";
-            this.mainToolStrip.Size = new System.Drawing.Size(747, 25);
+            this.mainToolStrip.Size = new System.Drawing.Size(695, 25);
             this.mainToolStrip.TabIndex = 2;
             this.mainToolStrip.Text = "toolStrip";
             // 
@@ -468,8 +475,8 @@
             // mainSplitContainer.Panel2
             // 
             this.mainSplitContainer.Panel2.Controls.Add(this.mainTabControl);
-            this.mainSplitContainer.Size = new System.Drawing.Size(747, 335);
-            this.mainSplitContainer.SplitterDistance = 350;
+            this.mainSplitContainer.Size = new System.Drawing.Size(695, 335);
+            this.mainSplitContainer.SplitterDistance = 325;
             this.mainSplitContainer.SplitterWidth = 2;
             this.mainSplitContainer.TabIndex = 3;
             // 
@@ -483,7 +490,7 @@
             this.mainTreeView.Margin = new System.Windows.Forms.Padding(2);
             this.mainTreeView.Name = "mainTreeView";
             this.mainTreeView.SelectedImageIndex = 0;
-            this.mainTreeView.Size = new System.Drawing.Size(350, 335);
+            this.mainTreeView.Size = new System.Drawing.Size(325, 335);
             this.mainTreeView.TabIndex = 0;
             this.mainTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.OnAfterSelect);
             this.mainTreeView.DoubleClick += new System.EventHandler(this.OnDoubleClick);
@@ -509,20 +516,49 @@
             this.mainTabControl.Margin = new System.Windows.Forms.Padding(2);
             this.mainTabControl.Name = "mainTabControl";
             this.mainTabControl.SelectedIndex = 0;
-            this.mainTabControl.Size = new System.Drawing.Size(395, 335);
+            this.mainTabControl.Size = new System.Drawing.Size(368, 335);
             this.mainTabControl.TabIndex = 1;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.tagLabel);
+            this.tabPage1.Controls.Add(this.button1);
+            this.tabPage1.Controls.Add(this.textBoxValue);
             this.tabPage1.Controls.Add(this.mainPropertyGrid);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage1.Size = new System.Drawing.Size(387, 309);
+            this.tabPage1.Size = new System.Drawing.Size(360, 309);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Properties";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tagLabel
+            // 
+            this.tagLabel.AutoSize = true;
+            this.tagLabel.Location = new System.Drawing.Point(5, 251);
+            this.tagLabel.Name = "tagLabel";
+            this.tagLabel.Size = new System.Drawing.Size(35, 13);
+            this.tagLabel.TabIndex = 3;
+            this.tagLabel.Text = "label1";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(233, 267);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "ADD";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // textBoxValue
+            // 
+            this.textBoxValue.Location = new System.Drawing.Point(20, 267);
+            this.textBoxValue.Name = "textBoxValue";
+            this.textBoxValue.Size = new System.Drawing.Size(180, 20);
+            this.textBoxValue.TabIndex = 1;
             // 
             // mainPropertyGrid
             // 
@@ -530,11 +566,9 @@
             this.mainPropertyGrid.Location = new System.Drawing.Point(2, 2);
             this.mainPropertyGrid.Margin = new System.Windows.Forms.Padding(2);
             this.mainPropertyGrid.Name = "mainPropertyGrid";
-            this.mainPropertyGrid.Size = new System.Drawing.Size(383, 305);
+            this.mainPropertyGrid.Size = new System.Drawing.Size(356, 305);
             this.mainPropertyGrid.TabIndex = 0;
             this.mainPropertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.mainPropertyGrid_PropertyValueChanged);
-            this.mainPropertyGrid.Scroll += new System.Windows.Forms.ScrollEventHandler(this.mainPropertyGrid_Scroll);
-            this.mainPropertyGrid.Click += new System.EventHandler(this.mainPropertyGrid_Click2);
             // 
             // helpTabPage
             // 
@@ -543,7 +577,7 @@
             this.helpTabPage.Margin = new System.Windows.Forms.Padding(2);
             this.helpTabPage.Name = "helpTabPage";
             this.helpTabPage.Padding = new System.Windows.Forms.Padding(2);
-            this.helpTabPage.Size = new System.Drawing.Size(387, 309);
+            this.helpTabPage.Size = new System.Drawing.Size(360, 309);
             this.helpTabPage.TabIndex = 1;
             this.helpTabPage.Text = "Help";
             this.helpTabPage.UseVisualStyleBackColor = true;
@@ -555,14 +589,34 @@
             this.mainWebBrowser.Margin = new System.Windows.Forms.Padding(2);
             this.mainWebBrowser.MinimumSize = new System.Drawing.Size(11, 11);
             this.mainWebBrowser.Name = "mainWebBrowser";
-            this.mainWebBrowser.Size = new System.Drawing.Size(383, 305);
+            this.mainWebBrowser.Size = new System.Drawing.Size(356, 305);
             this.mainWebBrowser.TabIndex = 0;
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton2.Text = "undoBtn";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+            // 
+            // toolStripButton3
+            // 
+            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
+            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton3.Name = "toolStripButton3";
+            this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton3.Text = "redoBtn";
+            this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
             // YAMLEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(747, 406);
+            this.ClientSize = new System.Drawing.Size(695, 406);
             this.Controls.Add(this.mainSplitContainer);
             this.Controls.Add(this.mainToolStrip);
             this.Controls.Add(this.mainStatusStrip);
@@ -582,6 +636,7 @@
             this.mainSplitContainer.ResumeLayout(false);
             this.mainTabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.helpTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -641,6 +696,11 @@
         private System.Windows.Forms.TabPage helpTabPage;
         private System.Windows.Forms.WebBrowser mainWebBrowser;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.TextBox textBoxValue;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label tagLabel;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton toolStripButton3;
     }
 }
 

@@ -5,10 +5,7 @@ VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAMLEditor", "YAMLEditor\YAMLEditor.csproj", "{1C860FCE-2645-4621-92B6-ABB73D4B7B1E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CBBF4E65-63A0-4B82-B146-E94EF4974469}"
-	ProjectSection(SolutionItems) = preProject
-		Readme.md = Readme.md
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackupFiles", "BackupFiles", "{EE3FB6D2-3CC2-4737-A671-62EE582E607A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

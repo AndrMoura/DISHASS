@@ -49,6 +49,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Command\CommandManager.cs" />
+    <Compile Include="Command\ICommand.cs" />
+    <Compile Include="Command\ICommandManager.cs" />
+    <Compile Include="Command\MacroCommand.cs" />
+    <Compile Include="Command\ValueCommand.cs" />
+    <Compile Include="FunctionAux.cs" />
     <Compile Include="YAMLEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,5 +96,6 @@
   <ItemGroup>
     <None Include="Resources\favicon-192x1921.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

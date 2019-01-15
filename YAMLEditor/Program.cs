@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,7 +17,13 @@ namespace YAMLEditor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault( false );
-            Application.Run( new YAMLEditorForm() );
+            YAMLEditorForm yamlEditor = new YAMLEditorForm();
+            Application.Run(yamlEditor);
+            foreach (var VARIABLE in yamlEditor.root.Name)
+            {
+                //Console.WriteLine(VARIABLE);
+            }
+            
         }
     }
 }
