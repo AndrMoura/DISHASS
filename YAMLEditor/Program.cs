@@ -19,11 +19,7 @@ namespace YAMLEditor
             Application.SetCompatibleTextRenderingDefault( false );
             YAMLEditorForm yamlEditor = new YAMLEditorForm();
             Application.Run(yamlEditor);
-            foreach (var VARIABLE in yamlEditor.root.Name)
-            {
-                //Console.WriteLine(VARIABLE);
-            }
-            
+         
         }
     }
 }

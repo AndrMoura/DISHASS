@@ -210,7 +210,6 @@ namespace YAMLEditor
             root.ImageIndex = root.SelectedImageIndex = 3;
             LoadFile(root, dialog.FileName);
             root.Expand();
-
         }
 
 
@@ -225,17 +224,12 @@ namespace YAMLEditor
         private void button1_Click(object sender, EventArgs e)//save btn
         {
             TreeNode itemNode = null;
-
+            if (root == null) return;
             itemNode = SearchTreeView(tagLabel.Text, root);
 
             var macro = new MacroCommand();
             macro.Add(new ValueCommand(itemNode,textBoxValue));
             Manager.Execute(macro);
-
-           
-         
-
-
 
         }
 
@@ -260,13 +254,13 @@ namespace YAMLEditor
             return null;
         }
 
-        private void toolStripButton2_Click(object sender, EventArgs e)
+        private void toolStripButton2_Click(object sender, EventArgs e)//undo btn
         {
             Manager.Undo();
             
         }
 
-        private void toolStripButton3_Click(object sender, EventArgs e)
+        private void toolStripButton3_Click(object sender, EventArgs e)//redo btn
         {
             Manager.Redo();
         }
