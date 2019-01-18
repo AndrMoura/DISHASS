@@ -159,6 +159,11 @@ namespace YAMLEditor
             Manager.Redo();
         }
 
+        /// <summary>
+        /// Saves to a file the current treeNode structure
+        /// </summary>
+        /// <param name="n">root node of treeNode</param>
+        /// <param name="filename"></param>
         private void FileWriter(TreeNode n, string filename)
         {
             YamlMappingNode rootNode = new YamlMappingNode();
@@ -175,7 +180,6 @@ namespace YAMLEditor
         private void saveChildrenMapping(TreeNode root, YamlMappingNode rootNode)
         {
             var children = root.Nodes;
-            //YamlMappingNode rootNode = new YamlMappingNode();
 
             foreach (TreeNode child in children)
             {
@@ -196,10 +200,9 @@ namespace YAMLEditor
                         rootNode.Add(child.Text, mappingNode);
                         saveChildrenMapping(child, mappingNode);
                     }
-
                 }
                 else
-                {
+                { //scalar found
                     var propInfo = child.Tag.GetType().GetProperty("Key"); //reflexao
                     var key = propInfo.GetValue(child.Tag, null);
                     var propInfo2 = child.Tag.GetType().GetProperty("Value"); //reflexao
@@ -216,17 +219,14 @@ namespace YAMLEditor
                         rootNode.Add(key.ToString(), new YamlScalarNode(scalar.Value) { Tag = "!include" });
                         continue;
                     }
+                    else if (child.ImageIndex is 2)
+                    {
+                        rootNode.Add(key.ToString(), new YamlScalarNode(scalar.Value) { Tag = "!secret" });
+                    }
                     else
                     {
-                        rootNode.Add(key.ToString(), scalar.Value);
-                    }
-                    //else if (value2.ToString().Substring(Math.Max(0, value2.ToString().Length - 5)) == ".yaml")
-                    //{
-                    //    scalar.Tag = "!secret";
-                    //}
-                    //rootNode.Add(key.ToString(), value2.ToString());
-
-                    //rootNode.Add(key.ToString(), new YamlScalarNode(scalar.Value) { Tag = "!include" });
+                        rootNode.Add(key.ToString(), scalar.Value); //normal scalar
+                    }  
                 }
             }
 
@@ -260,21 +260,6 @@ namespace YAMLEditor
                         var value2 = propInfo2.GetValue(child.Tag, null);
                         YamlScalarNode scalar = new YamlScalarNode();
                         scalar.Value = value2 as string;
-
-
-
-                        if (value2.ToString().Substring(Math.Max(0, value2.ToString().Length - 5)) == ".yaml")
-                        {
-                            var prop = child.Tag.GetType().GetProperty("Value");
-                            var filename = prop.GetValue(child.Tag, null);
-
-                            FileWriter(child, filename.ToString());
-                        }
-
-                        /* else if (value2.ToString().Substring(Math.Max(0, value2.ToString().Length - 5)) == ".yaml")
-                         {
-                             scalar.Tag = "!secret";
-                         }*/
 
                         sequence.Add(scalar);
                     }
