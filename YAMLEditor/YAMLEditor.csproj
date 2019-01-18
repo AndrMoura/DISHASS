@@ -8,10 +8,11 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>YAMLEditor</RootNamespace>
     <AssemblyName>YAMLEditor</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -55,6 +56,12 @@
     <Compile Include="Command\MacroCommand.cs" />
     <Compile Include="Command\ValueCommand.cs" />
     <Compile Include="FunctionAux.cs" />
+    <Compile Include="LoadYaml\FileHandler.cs" />
+    <Compile Include="LoadYaml\ImageLoad.cs" />
+    <Compile Include="LoadYaml\INodeLoader.cs" />
+    <Compile Include="LoadYaml\MapLoader.cs" />
+    <Compile Include="LoadYaml\NodeLoader.cs" />
+    <Compile Include="LoadYaml\SequenceLoader.cs" />
     <Compile Include="YAMLEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>

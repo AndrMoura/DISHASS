@@ -12,6 +12,7 @@ using System.Windows.Forms;
 
 using YamlDotNet.RepresentationModel;
 using YAMLEditor.Command;
+using YAMLEditor.LoadYaml;
 
 namespace YAMLEditor
 {
@@ -24,11 +25,7 @@ namespace YAMLEditor
 
         public YAMLEditorForm()
         {
-            InitializeComponent();
-            
-         
-           
-    
+            InitializeComponent();          
 
         }
 
@@ -40,146 +37,46 @@ namespace YAMLEditor
 
         private void OnOpen( object sender, EventArgs e )
         {
+
             dialog = new OpenFileDialog()
-                { Filter = @"Yaml files (*.yaml)|*.yaml|All files (*.*)|*.*", DefaultExt = "yaml" };
-            if ( dialog.ShowDialog() == DialogResult.OK )
+            { Filter = @"Yaml files (*.yaml)|*.yaml|All files (*.*)|*.*", DefaultExt = "yaml" };
+
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
-                System.Diagnostics.Trace.WriteLine( $"Filename: {dialog.FileName}" );
-                Directory.SetCurrentDirectory( Path.GetDirectoryName( dialog.FileName ) ?? "" );
+                System.Diagnostics.Trace.WriteLine($"Filename: {dialog.FileName}");
+                Directory.SetCurrentDirectory(Path.GetDirectoryName(dialog.FileName) ?? "");
 
                 mainTreeView.Nodes.Clear();
-                root = mainTreeView.Nodes.Add( Path.GetFileName( dialog.FileName ) );
+                root = (mainTreeView.Nodes.Add(Path.GetFileName(dialog.FileName)));
                 root.ImageIndex = root.SelectedImageIndex = 3;
-                LoadFile( root, dialog.FileName );
+
+                FileHandler yaml = new FileHandler(root, dialog.FileName);
+
+                NodeLoader<YamlMappingNode> node = new NodeLoader<YamlMappingNode>(new MapLoader(), root);
+
+
+                node.operate(root, yaml.YamlSteam.Documents[0].RootNode as YamlMappingNode);
+
+                // LoadFile( root, dialog.FileName );
                 root.Expand();
+                // Console.WriteLine("Arvore" +root);
+                //PrintRecursive(root);
+                //Console.WriteLine(root.Nodes);
+                Console.WriteLine(root);
+                var children = root.Nodes;
             }
         }
+ 
 
-        private void LoadFile( TreeNode node, string filename )
-        {
-            var yaml = new YamlStream();
-            try
-            {
-                using ( var stream = new StreamReader( filename ) )
-                {
-                    yaml.Load( stream );
-                }
-            }
-            catch ( Exception exception )
-            {
-                Console.WriteLine( exception.Message );
-            }
-
-            if ( yaml.Documents.Count == 0 ) return;
-            LoadChildren( node, yaml.Documents [0].RootNode as YamlMappingNode );
-            foreach (var VARIABLE in node.Nodes)
-            {
-                //if(VARIABLE is YamlMappingNode)
-                //    Console.WriteLine("node:" + VARIABLE);
-                
-            }
-            
-        }
-
-        private void LoadChildren( TreeNode root, YamlMappingNode mapping )
-        {
-            var children = mapping?.Children;
-            if ( children == null ) return;
-           
-
-            foreach ( var child in children )
-            {
-                var key = child.Key as YamlScalarNode;
-                System      .Diagnostics.Trace.Assert( key != null );
-
-                if ( child.Value is YamlScalarNode )//simbolo azul
-                {
-                    var scalar = child.Value as YamlScalarNode;
-
-                    var node = root.Nodes.Add( $"{key.Value}: {scalar.Value}" );
-                    node.Tag = child;
-                    node.ImageIndex = node.SelectedImageIndex = GetImageIndex( scalar );
-
-                    if ( scalar.Tag == "!include" )
-                    {
-                        LoadFile( node, scalar.Value );
-                    }              
-                }
-                else if ( child.Value is YamlSequenceNode)//simbolo amarelo
-                {
-                    var node = root.Nodes.Add( key.Value );
-                    node.Tag = child.Value;
-                    node.ImageIndex = node.SelectedImageIndex = GetImageIndex( child.Value );
-
-                    LoadChildren( node, child.Value as YamlSequenceNode );
-                    
-                }
-                else if ( child.Value is YamlMappingNode )//branco
-                {
-                    var node = root.Nodes.Add( key.Value );
-                    node.Tag = child.Value;
-                    node.ImageIndex = node.SelectedImageIndex = GetImageIndex( child.Value );
-
-                    LoadChildren( node, child.Value as YamlMappingNode );
-                    Console.WriteLine(child.Key);
-                }
-                
-            }
-        }
-
-        private int GetImageIndex( YamlNode node )
-        {
-            switch ( node.NodeType )
-            {
-                case YamlNodeType.Scalar:
-                    if ( node.Tag == "!secret"  ) return 2;
-                    if ( node.Tag == "!include" ) return 1;
-                    return 0;
-                case YamlNodeType.Sequence: return 3;
-                case YamlNodeType.Mapping:
-                    if ( node is YamlMappingNode mapping && mapping.Children.Any( pair => ( (YamlScalarNode) pair.Key ).Value == "platform" ) ) return 5;
-                    return 4;
-            }
-            return 0;
-        }
-
-        private void LoadChildren( TreeNode root, YamlSequenceNode sequence )
-        {
-            foreach ( var child in sequence.Children )
-            {
-                if ( child is YamlSequenceNode )
-                {
-                    var node = root.Nodes.Add( root.Text );
-                    node.Tag = child;
-                    node.ImageIndex = node.SelectedImageIndex = GetImageIndex( child);
-
-                    LoadChildren( node, child as YamlSequenceNode );
-                }
-                else if ( child is YamlMappingNode )
-                {
-                    var node = root.Nodes.Add( root.Text );
-                    node.Tag = child;
-                    node.ImageIndex = node.SelectedImageIndex = GetImageIndex( child );
-
-                    LoadChildren( node, child as YamlMappingNode );
-                }
-                else if ( child is YamlScalarNode )
-                {
-                    var scalar = child as YamlScalarNode;
-                    var node = root.Nodes.Add( scalar.Value );
-                    node.Tag = child;
-                    node.ImageIndex = node.SelectedImageIndex = GetImageIndex( child );
-                }
-            }
-        }
+     
 
         private void OnAfterSelect(object sender, TreeViewEventArgs e)
         {
-            mainPropertyGrid.SelectedObject = e.Node.Tag;
+           /* mainPropertyGrid.SelectedObject = e.Node.Tag;
             textBoxValue.Text = e.Node.Tag.ToString();
             tagLabel.Text = e.Node.Tag.ToString();
 
-            Console.WriteLine("item dentro do grid: " + e.Node.FullPath );
+            Console.WriteLine("item dentro do grid: " + e.Node.FullPath );*/
         }
 
         private void OnDoubleClick( object sender, EventArgs e )
@@ -208,7 +105,7 @@ namespace YAMLEditor
             mainTreeView.Nodes.Clear();
             root = mainTreeView.Nodes.Add(Path.GetFileName(dialog.FileName));
             root.ImageIndex = root.SelectedImageIndex = 3;
-            LoadFile(root, dialog.FileName);
+           // LoadFile(root, dialog.FileName);
             root.Expand();
         }
 
@@ -263,6 +160,131 @@ namespace YAMLEditor
         private void toolStripButton3_Click(object sender, EventArgs e)//redo btn
         {
             Manager.Redo();
+        }
+
+        private void FileWriter(TreeNode n, string filename)
+        {
+            YamlMappingNode rootNode = new YamlMappingNode();
+
+            saveChildrenMapping(n, rootNode);
+
+            YamlDocument doc = new YamlDocument(rootNode);
+            var yaml = new YamlStream(doc);
+
+            using (TextWriter writer = File.CreateText("C:\\Users\\André\\Source\\Repos\\DISHASS2\\YAMLEditor\\bin\\Debug\\" + filename))
+                yaml.Save(writer, false);
+        }
+
+        private void saveChildrenMapping(TreeNode root, YamlMappingNode rootNode)
+        {
+            var children = root.Nodes;
+            //YamlMappingNode rootNode = new YamlMappingNode();
+
+            foreach (TreeNode child in children)
+            {
+                var propertyInfo = child.Tag.GetType().GetProperty("NodeType"); //reflexao
+
+                if (propertyInfo != null)
+                {
+                    var value = propertyInfo.GetValue(child.Tag, null);
+                    if (value.ToString().Equals("Sequence"))
+                    {
+                        YamlSequenceNode sequenceNode = new YamlSequenceNode();
+                        rootNode.Add(child.Text, sequenceNode);
+                        saveChildrenSequence(child, sequenceNode);
+                    }
+                    else if (value.ToString().Equals("Mapping"))
+                    {
+                        YamlMappingNode mappingNode = new YamlMappingNode();
+                        rootNode.Add(child.Text, mappingNode);
+                        saveChildrenMapping(child, mappingNode);
+                    }
+
+                }
+                else
+                {
+                    var propInfo = child.Tag.GetType().GetProperty("Key"); //reflexao
+                    var key = propInfo.GetValue(child.Tag, null);
+                    var propInfo2 = child.Tag.GetType().GetProperty("Value"); //reflexao
+                    var value2 = propInfo2.GetValue(child.Tag, null);
+
+                    YamlScalarNode scalar = new YamlScalarNode();
+                    scalar.Value = value2.ToString();
+
+                    if (value2.ToString().Substring(Math.Max(0, value2.ToString().Length - 5)) == ".yaml")
+                    {
+                        var prop = child.Tag.GetType().GetProperty("Value");
+                        var filename = prop.GetValue(child.Tag, null);
+                        FileWriter(child, filename.ToString());
+
+                    }
+                    //else if (value2.ToString().Substring(Math.Max(0, value2.ToString().Length - 5)) == ".yaml")
+                    //{
+                    //    scalar.Tag = "!secret";
+                    //}
+                    //rootNode.Add(key.ToString(), value2.ToString());
+                    //rootNode.Add(key.ToString(), scalar.Value);
+
+                    rootNode.Add(key.ToString(), new YamlScalarNode(scalar.Value) { Tag = "!include" });
+                }
+            }
+
+        }
+
+        private void saveChildrenSequence(TreeNode children, YamlSequenceNode sequence)
+        {
+            foreach (TreeNode child in children.Nodes)
+            {
+                var propertyInfo = child.Tag.GetType().GetProperty("NodeType"); //reflexao
+
+                if (propertyInfo != null)
+                {
+                    var value = propertyInfo.GetValue(child.Tag, null);
+                    if (value.ToString().Equals("Sequence"))
+                    {
+                        YamlSequenceNode sequenceNode = new YamlSequenceNode();
+                        sequence.Add(sequenceNode);
+                        saveChildrenSequence(child, sequenceNode);
+                    }
+                    else if (value.ToString().Equals("Mapping"))
+                    {
+                        YamlMappingNode mappingNode = new YamlMappingNode();
+                        sequence.Add(mappingNode);
+                        saveChildrenMapping(child, mappingNode);
+                    }
+                    else if (value.ToString().Equals("Scalar"))
+                    {
+
+                        var propInfo2 = child.Tag.GetType().GetProperty("Value"); //reflexao
+                        var value2 = propInfo2.GetValue(child.Tag, null);
+                        YamlScalarNode scalar = new YamlScalarNode();
+                        scalar.Value = value2 as string;
+
+
+
+                        if (value2.ToString().Substring(Math.Max(0, value2.ToString().Length - 5)) == ".yaml")
+                        {
+                            var prop = child.Tag.GetType().GetProperty("Value");
+                            var filename = prop.GetValue(child.Tag, null);
+
+                            FileWriter(child, filename.ToString());
+                        }
+
+                        /* else if (value2.ToString().Substring(Math.Max(0, value2.ToString().Length - 5)) == ".yaml")
+                         {
+                             scalar.Tag = "!secret";
+                         }*/
+
+                        sequence.Add(scalar);
+                    }
+                }
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var filename = root.Text;
+            FileWriter(root, filename);
         }
     }
 }
