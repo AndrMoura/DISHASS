@@ -5,10 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace YAMLEditor
 {
     static class Program
     {
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -19,7 +21,7 @@ namespace YAMLEditor
             Application.SetCompatibleTextRenderingDefault( false );
             YAMLEditorForm yamlEditor = new YAMLEditorForm();
             Application.Run(yamlEditor);
-         
         }
+
     }
 }

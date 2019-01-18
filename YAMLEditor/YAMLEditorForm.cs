@@ -25,17 +25,17 @@ namespace YAMLEditor
 
         public YAMLEditorForm()
         {
-            InitializeComponent();          
+            InitializeComponent();
 
         }
 
-        private void OnExit( object sender, EventArgs e )
+        private void OnExit(object sender, EventArgs e)
         {
             Application.Exit();
-            
+
         }
 
-        private void OnOpen( object sender, EventArgs e )
+        private void OnOpen(object sender, EventArgs e)
         {
 
             dialog = new OpenFileDialog()
@@ -66,54 +66,51 @@ namespace YAMLEditor
                 var children = root.Nodes;
             }
         }
- 
 
-     
+
+
 
         private void OnAfterSelect(object sender, TreeViewEventArgs e)
         {
-           /* mainPropertyGrid.SelectedObject = e.Node.Tag;
-            textBoxValue.Text = e.Node.Tag.ToString();
-            tagLabel.Text = e.Node.Tag.ToString();
+             mainPropertyGrid.SelectedObject = e.Node.Tag;
+            if (e.Node.Tag == null) return;
+             textBoxValue.Text = e.Node.Tag.ToString();
+             tagLabel.Text = e.Node.Tag.ToString();
 
-            Console.WriteLine("item dentro do grid: " + e.Node.FullPath );*/
+             Console.WriteLine("item dentro do grid: " + e.Node.FullPath );
         }
 
-        private void OnDoubleClick( object sender, EventArgs e )
+        private void OnDoubleClick(object sender, EventArgs e)
         {
-            if ( mainTreeView.SelectedNode == null ) return;
+            if (mainTreeView.SelectedNode == null) return;
             var selected = mainTreeView.SelectedNode;
 
-            if ( selected.Tag is YamlMappingNode node )
+            if (selected.Tag is YamlMappingNode node)
             {
-                if ( node.Children.Any( p => ( (YamlScalarNode) p.Key ).Value == "platform" ) )
+                if (node.Children.Any(p => ((YamlScalarNode)p.Key).Value == "platform"))
                 {
-                    var platform = node.Children.FirstOrDefault( p => ( (YamlScalarNode) p.Key ).Value == "platform" );
-                    mainWebBrowser.Url = new Uri( $@"https://www.home-assistant.io/components/{ selected.Text }.{ platform.Value }" );
-                    mainTabControl.SelectTab( helpTabPage );
+                    var platform = node.Children.FirstOrDefault(p => ((YamlScalarNode)p.Key).Value == "platform");
+                    mainWebBrowser.Url = new Uri($@"https://www.home-assistant.io/components/{ selected.Text }.{ platform.Value }");
+                    mainTabControl.SelectTab(helpTabPage);
                 }
             }
         }
 
-        /// <summary>
-        /// refresh the doc
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+      
         private void toolStripButton1_Click(object sender, EventArgs e)//faz refresh
         {
             mainTreeView.Nodes.Clear();
             root = mainTreeView.Nodes.Add(Path.GetFileName(dialog.FileName));
             root.ImageIndex = root.SelectedImageIndex = 3;
-           // LoadFile(root, dialog.FileName);
+            // LoadFile(root, dialog.FileName);
             root.Expand();
         }
 
 
-  
+
 
         private void mainPropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
-        {          
+        {
             Console.WriteLine("valor sender: " + e.ChangedItem.Value);
         }
 
@@ -125,7 +122,7 @@ namespace YAMLEditor
             itemNode = SearchTreeView(tagLabel.Text, root);
 
             var macro = new MacroCommand();
-            macro.Add(new ValueCommand(itemNode,textBoxValue));
+            macro.Add(new ValueCommand(itemNode, textBoxValue));
             Manager.Execute(macro);
 
         }
@@ -154,7 +151,7 @@ namespace YAMLEditor
         private void toolStripButton2_Click(object sender, EventArgs e)//undo btn
         {
             Manager.Undo();
-            
+
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)//redo btn
@@ -216,16 +213,20 @@ namespace YAMLEditor
                         var prop = child.Tag.GetType().GetProperty("Value");
                         var filename = prop.GetValue(child.Tag, null);
                         FileWriter(child, filename.ToString());
-
+                        rootNode.Add(key.ToString(), new YamlScalarNode(scalar.Value) { Tag = "!include" });
+                        continue;
+                    }
+                    else
+                    {
+                        rootNode.Add(key.ToString(), scalar.Value);
                     }
                     //else if (value2.ToString().Substring(Math.Max(0, value2.ToString().Length - 5)) == ".yaml")
                     //{
                     //    scalar.Tag = "!secret";
                     //}
                     //rootNode.Add(key.ToString(), value2.ToString());
-                    //rootNode.Add(key.ToString(), scalar.Value);
 
-                    rootNode.Add(key.ToString(), new YamlScalarNode(scalar.Value) { Tag = "!include" });
+                    //rootNode.Add(key.ToString(), new YamlScalarNode(scalar.Value) { Tag = "!include" });
                 }
             }
 
@@ -286,5 +287,8 @@ namespace YAMLEditor
             var filename = root.Text;
             FileWriter(root, filename);
         }
+
+
+    
     }
 }

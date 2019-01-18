@@ -83,6 +83,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="alert.yaml" />
+    <None Include="configuration.yaml" />
+    <None Include="configuration2.yaml" />
+    <None Include="customize.yaml" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -98,6 +102,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Readme.md" />
     <None Include="Resources\favicon-192x192.png" />
   </ItemGroup>
   <ItemGroup>

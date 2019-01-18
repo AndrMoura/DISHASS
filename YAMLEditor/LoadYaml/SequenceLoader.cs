@@ -36,7 +36,6 @@ namespace YAMLEditor.LoadYaml
                     var scalar = child as YamlScalarNode;
                     var node = root.Nodes.Add(scalar.Value);
                     node.Tag = child;
-                    //node.
                     node.ImageIndex = node.SelectedImageIndex = ImageLoad.GetImageIndex(child);
                 }
             }
