@@ -10,8 +10,7 @@ homeassistant:
   unit_system: metric
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: UTC
-  # Customization file
-  customize: !include customize.yaml
+ 
 
 # Show links to resources in log and frontend
 introduction:
@@ -42,7 +41,7 @@ discovery:
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
 
-# Enables support for tracking state changes over time
+# Enables support for tracsking state changes over time
 history:
 
 # View all events in a logbook
@@ -75,13 +74,3 @@ tts:
 dasdsadsad:
   - platform: google
   - data: filho
-
-
-# Cloud
-cloud:
-
-group: !include groups.yaml
-automation: !include automations.yaml
-script: !include scripts.yaml
-
-
