@@ -23,13 +23,18 @@ namespace YAMLEditor.Command
 
         public void Execute()
         {
-        
-            string valTemp = itemNode.Text;
-            previous = value.Text;
-            itemNode.Text = previous;
-            itemNode.Tag = previous;
-            previous = valTemp;
-            value.Text = itemNode.Text;
+            //verificacação null, para nao crashar
+            if (itemNode != null)
+            {
+               
+                string valTemp = itemNode.Text;
+                previous = value.Text;
+                itemNode.Text = previous;
+                itemNode.Tag = previous;
+                previous = valTemp;
+                value.Text = itemNode.Text;
+              
+            };
 
         }
 
@@ -40,6 +45,8 @@ namespace YAMLEditor.Command
             itemNode.Tag = previous;
             value.Text = valTemp;
             previous = valTemp;
+
+          
         }
 
         public void Redo()
