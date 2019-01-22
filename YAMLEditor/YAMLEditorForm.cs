@@ -22,10 +22,12 @@ namespace YAMLEditor
         public OpenFileDialog dialog;
         public TreeViewEventArgs e;
         private CommandManager Manager = new CommandManager();
+        private Timer saveTimer;
 
         public YAMLEditorForm()
         {
             InitializeComponent();
+            
 
         }
 
@@ -36,7 +38,9 @@ namespace YAMLEditor
         }
 
         private void OnOpen(object sender, EventArgs e)
-        {
+        {       
+            //start timer
+            InitTimer();
 
             dialog = new OpenFileDialog()
             { Filter = @"Yaml files (*.yaml)|*.yaml|All files (*.*)|*.*", DefaultExt = "yaml" };
@@ -173,7 +177,7 @@ namespace YAMLEditor
             YamlDocument doc = new YamlDocument(rootNode);
             var yaml = new YamlStream(doc);
 
-            using (TextWriter writer = File.CreateText("C:\\Users\\André\\Source\\Repos\\DISHASS2\\YAMLEditor\\bin\\Debug\\" + filename))
+            using (TextWriter writer = File.CreateText("..\\bin\\Debug\\" + filename))
                 yaml.Save(writer, false);
         }
 
@@ -267,13 +271,57 @@ namespace YAMLEditor
             }
         }
 
+        /// <summary>
+        /// On save button click the data in bin/debug is sen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Console.WriteLine("asdasdsad" + Application.StartupPath);
+            //save final: copiamos os ficheiros da pasta recovery para a pasta final(Config_files)
+            var finalDirectory = @".\\";
+            var recoveryFiles = Directory.GetFiles(@"..\\bin\\Debug\\", "*.yaml");
+            
+            if (recoveryFiles.Count() < 1) return;
+            foreach (var file in recoveryFiles)
+            {
+                try
+                {
+                    File.Move(file, finalDirectory + Path.GetFileName(file));
+                }
+                catch (IOException q)
+                {
+                    //When the file already exists in directory
+                    File.Delete(finalDirectory + Path.GetFileName(file));
+                    File.Move(file, finalDirectory + Path.GetFileName(file));
+                    Console.WriteLine(q);
+                }
+                
+                //File.Delete(file);
+            }
+
+        }
+
+        
+        public void InitTimer()
+        {
+            saveTimer = new Timer();
+            saveTimer.Tick += new EventHandler(timerSaveEvent);
+            saveTimer.Interval = 10000; // 10 sec
+            saveTimer.Start();
+        }
+        /// <summary>
+        /// Auto save every 30 seconds to bin//debug folder
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timerSaveEvent(object sender, EventArgs e)
         {
             var filename = root.Text;
             FileWriter(root, filename);
         }
 
 
-    
     }
 }
