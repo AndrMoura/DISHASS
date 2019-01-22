@@ -8,30 +8,32 @@ namespace YAMLEditor.Composite
 {
    public class ScalarNode : INode
    {
-        public string Data { get; set; }
-        public static string Key { get; set; }
+        private static int initializeCount = 0;
+ 
+        public int ID { get; set; }
+        public string Value { get; set; }
+        public string Key { get; set; }
 
         public object Tag { get; set; }
         public string NodeType { get; set;}
 
+        public string Property { get; set; }
         public int ImageIndex { get; set; }
 
-        public ScalarNode(string data, object tag, string nodeType, int imageIndex)
+        public ScalarNode(string value, object tag, string nodeType, int imageIndex, string key = null)
         {
-            this.Data = data;
+            initializeCount++;
+            this.Key = key;
+            this.ID = initializeCount;
+            this.Value = value;
             this.Tag = tag;
             this.NodeType = nodeType;
             this.ImageIndex = imageIndex;
         }
 
-        public string ShowData()
-        {
-           return Data;
-        }
-
         public INode SearchNode(INode node)
         {
-            if (Data == node.Data)
+            if (Value == node.Value)
                 return this;
             return null;
         }

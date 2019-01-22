@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using YamlDotNet.RepresentationModel;
@@ -9,16 +10,22 @@ namespace YAMLEditor.Composite
 {
     public class SequenceNode : INode
     {
+        public static int ID
+        {
+            get;
+            set;
+        }
+        public int id = 0;
         public List<INode> Children { get; set; }
        
-        public string Data { get; set; }
+        public string Value { get; set; }
         public object Tag { get; set; } //to display WPF treeNode
         [YamlDotNet.Serialization.YamlIgnore]
         public int ImageIndex { get; set; }
 
-        public SequenceNode(string data, object tag, int imagexIndex)
+        public SequenceNode(string value, object tag, int imagexIndex)
         {
-            Data = data;
+            Value = value;
             Tag = tag;
             ImageIndex = imagexIndex;
         }
@@ -44,7 +51,7 @@ namespace YAMLEditor.Composite
 
         public INode SearchNode(INode node)
         {
-            if (Data == node.Data)
+            if (Value == node.Value)
                 return node;
 
             foreach (INode child in Children)

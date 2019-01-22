@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using YamlDotNet.RepresentationModel;
+using YAMLEditor.Composite;
 
 namespace YAMLEditor.LoadYaml
 {
     class FileHandler
     {
-        private YamlStream yamlStream;
+        private static YamlStream yamlStream;
 
         public YamlStream YamlSteam    
         {
@@ -22,12 +24,12 @@ namespace YAMLEditor.LoadYaml
         }
         public FileHandler() { }
 
-        public FileHandler(TreeNode node, string filename)
+        public FileHandler(INode node, string filename)
         {
             LoadFile(node, filename);
         }
 
-        public void LoadFile(TreeNode node, string filename)
+        public static YamlStream LoadFile(INode node, string filename)
         {
             var yaml = new YamlStream();
             try
@@ -41,9 +43,9 @@ namespace YAMLEditor.LoadYaml
             {
                 Console.WriteLine(exception.Message);
             }
-            this.yamlStream = yaml;
+           // yamlStream = yaml;
 
-            if (yaml.Documents.Count == 0) return;
+           return yaml; //stream
         }
     }
 }

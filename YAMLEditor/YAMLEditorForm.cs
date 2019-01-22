@@ -43,7 +43,7 @@ namespace YAMLEditor
         private void OnOpen(object sender, EventArgs e)
         {       
             //start timer
-            InitTimer();
+           
 
             dialog = new OpenFileDialog()
             { Filter = @"Yaml files (*.yaml)|*.yaml|All files (*.*)|*.*", DefaultExt = "yaml" };
@@ -57,14 +57,15 @@ namespace YAMLEditor
                 root = (mainTreeView.Nodes.Add(Path.GetFileName(dialog.FileName)));
                 root.ImageIndex = root.SelectedImageIndex = 3;
 
-                FileHandler yaml = new FileHandler(root, dialog.FileName); //PARA REMOVE SOON
-                NodeLoader<YamlMappingNode> node = new NodeLoader<YamlMappingNode>(new MapLoader(), root);
-                node.operate(root, yaml.YamlSteam.Documents[0].RootNode as YamlMappingNode);
-
+              // FileHandler yaml = new FileHandler(root, dialog.FileName); //PARA REMOVE SOON
+               /* NodeLoader<YamlMappingNode> node = new NodeLoader<YamlMappingNode>(new MapLoader(), root);
+                node.operate(root, yaml.YamlSteam.Documents[0].RootNode as YamlMappingNode);*/
 
                 mapNode = new MappingNode(root.Text);
-                LoadTree.CreateTree(mapNode, yaml.YamlSteam.Documents[0].RootNode as YamlMappingNode);
+                var yaml = FileHandler.LoadFile(mapNode, dialog.FileName);
+                LoadTree.CreateTree(mapNode, yaml.Documents[0].RootNode as YamlMappingNode, root);
                 int i = 0;
+                // InitTimer();
             }
         }
 

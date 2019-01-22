@@ -9,20 +9,25 @@ namespace YAMLEditor.Composite
 {
     public class MappingNode : INode
     {
+        public static int id = 0;
+
         public List<INode> Children { get; set; }
 
-        public string Data { get; set; }
+        public string Value { get; set; }
         public object Tag { get; set; } //to display WPF treeNode
         [YamlDotNet.Serialization.YamlIgnore]
         public int ImageIndex { get; set; }
-        public MappingNode(string data) { Data = data; }
+        public MappingNode(string data) { Value= data; }
+       
 
-        public MappingNode(string data, object tag, int imageIndex)
+        public MappingNode(string value, object tag, int imageIndex)
         {
-            this.Data = data;
+            id++;
+            this.Value = value;
             this.Tag = tag;
             this.ImageIndex = imageIndex;
         }
+
 
         public IList<INode> getChildren()
         {
@@ -31,7 +36,7 @@ namespace YAMLEditor.Composite
 
         public INode SearchNode(INode node )
         {
-            if (Data == node.Data)
+            if (Value == node.Value)
                 return node;
 
             foreach(INode child in Children)

@@ -35,9 +35,9 @@ namespace YAMLEditor.LoadYaml
 
                     if (scalar.Tag == "!include")
                     {                   
-                        fh.LoadFile(node, scalar.Value);
-                        if (fh.YamlSteam.Documents.Count == 0) continue;
-                        LoadChildren(node,fh.YamlSteam.Documents[0].RootNode as YamlMappingNode);
+                    //    FileHandler.LoadFile(node, scalar.Value);
+                      //  if (fh.YamlSteam.Documents.Count == 0) continue;
+                    //    LoadChildren(node,fh.YamlSteam.Documents[0].RootNode as YamlMappingNode);
                     }
                 }
                 else if (child.Value is YamlSequenceNode)

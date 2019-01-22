@@ -10,7 +10,10 @@ namespace YAMLEditor.Composite
 
     public interface INode
     {
-        string Data { get; set; }
+        object Tag { get; set; }
+        string Value { get; set; }
+        int ImageIndex { get; set; }
+
         INode SearchNode(INode node);
     }
 }
