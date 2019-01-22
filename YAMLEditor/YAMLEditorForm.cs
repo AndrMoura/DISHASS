@@ -118,9 +118,13 @@ namespace YAMLEditor
             if (root == null) return;
             itemNode = SearchTreeView(tagLabel.Text, root);
 
-            var macro = new MacroCommand();
-            macro.Add(new ValueCommand(itemNode, textBoxValue));
-            Manager.Execute(macro);
+            //verificacação null, para nao crashar
+            if (!string.IsNullOrEmpty(textBoxValue.Text))
+            {
+                var macro = new MacroCommand();
+                macro.Add(new ValueCommand(itemNode, textBoxValue));
+                Manager.Execute(macro);
+            }
 
         }
 
@@ -147,8 +151,9 @@ namespace YAMLEditor
 
         private void toolStripButton2_Click(object sender, EventArgs e)//undo btn
         {
+            
             Manager.Undo();
-
+            
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)//redo btn
