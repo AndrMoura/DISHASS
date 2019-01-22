@@ -12,7 +12,9 @@ using System.Windows.Forms;
 
 using YamlDotNet.RepresentationModel;
 using YAMLEditor.Command;
+using YAMLEditor.Composite;
 using YAMLEditor.LoadYaml;
+using YAMLEditor.YamlUtils;
 
 namespace YAMLEditor
 {
@@ -21,6 +23,7 @@ namespace YAMLEditor
         public TreeNode root;
         public OpenFileDialog dialog;
         public TreeViewEventArgs e;
+        public MappingNode mapNode;
         private CommandManager Manager = new CommandManager();
         private Timer saveTimer;
 
@@ -54,20 +57,14 @@ namespace YAMLEditor
                 root = (mainTreeView.Nodes.Add(Path.GetFileName(dialog.FileName)));
                 root.ImageIndex = root.SelectedImageIndex = 3;
 
-                FileHandler yaml = new FileHandler(root, dialog.FileName);
-
+                FileHandler yaml = new FileHandler(root, dialog.FileName); //PARA REMOVE SOON
                 NodeLoader<YamlMappingNode> node = new NodeLoader<YamlMappingNode>(new MapLoader(), root);
-
-
                 node.operate(root, yaml.YamlSteam.Documents[0].RootNode as YamlMappingNode);
 
-                // LoadFile( root, dialog.FileName );
-                root.Expand();
-                // Console.WriteLine("Arvore" +root);
-                //PrintRecursive(root);
-                //Console.WriteLine(root.Nodes);
-                Console.WriteLine(root);
-                var children = root.Nodes;
+
+                mapNode = new MappingNode(root.Text);
+                LoadTree.CreateTree(mapNode, yaml.YamlSteam.Documents[0].RootNode as YamlMappingNode);
+                int i = 0;
             }
         }
 
@@ -125,9 +122,13 @@ namespace YAMLEditor
             if (root == null) return;
             itemNode = SearchTreeView(tagLabel.Text, root);
 
-            var macro = new MacroCommand();
-            macro.Add(new ValueCommand(itemNode, textBoxValue));
-            Manager.Execute(macro);
+            //verificacação null, para nao crashar
+            if (!string.IsNullOrEmpty(textBoxValue.Text))
+            {
+                var macro = new MacroCommand();
+                macro.Add(new ValueCommand(itemNode, textBoxValue));
+                Manager.Execute(macro);
+            }
 
         }
 
@@ -154,8 +155,9 @@ namespace YAMLEditor
 
         private void toolStripButton2_Click(object sender, EventArgs e)//undo btn
         {
+            
             Manager.Undo();
-
+            
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)//redo btn

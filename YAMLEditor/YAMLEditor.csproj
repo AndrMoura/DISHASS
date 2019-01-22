@@ -56,6 +56,10 @@
     <Compile Include="Command\ICommandManager.cs" />
     <Compile Include="Command\MacroCommand.cs" />
     <Compile Include="Command\ValueCommand.cs" />
+    <Compile Include="Composite\INode.cs" />
+    <Compile Include="Composite\MappingNode.cs" />
+    <Compile Include="Composite\ScalarNode.cs" />
+    <Compile Include="Composite\SequenceNode.cs" />
     <Compile Include="FunctionAux.cs" />
     <Compile Include="LoadYaml\FileHandler.cs" />
     <Compile Include="LoadYaml\ImageLoad.cs" />
@@ -71,6 +75,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="YamlUtils\LoadTree.cs" />
     <EmbeddedResource Include="YAMLEditorForm.resx">
       <DependentUpon>YAMLEditorForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -88,7 +93,6 @@
     <None Include="configuration.yaml" />
     <None Include="configuration2.yaml" />
     <None Include="customize.yaml" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
