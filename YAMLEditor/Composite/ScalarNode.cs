@@ -11,9 +11,9 @@ namespace YAMLEditor.Composite
 {
    public class ScalarNode : INode
    {
-        private static int initializeCount = 0;
- 
-        public int ID { get; set; }
+
+
+        public int id;
         public string Value { get; set; }
         public string Key { get; set; }
 
@@ -23,17 +23,20 @@ namespace YAMLEditor.Composite
         public string Property { get; set; }
         public int ImageIndex { get; set; }
 
-        public ScalarNode(string value, object tag, string nodeType, int imageIndex, string key = null)
+        public ScalarNode(string value, object tag, string nodeType, int imageIndex, int index, string key = null)
         {
-            initializeCount++;
+            
             this.Key = key;
-            this.ID = initializeCount;
+            id = index;
             this.Value = value;
             this.Tag = tag;
             this.NodeType = nodeType;
             this.ImageIndex = imageIndex;
         }
-
+       public int getID()
+       {
+           return id;
+       }
         public INode SearchNode(INode node)
         {
             if (Value == node.Value)

@@ -11,24 +11,24 @@ namespace YAMLEditor.Composite
 {
     public class SequenceNode : INode
     {
-        public static int ID
-        {
-            get;
-            set;
-        }
-        public int id = 0;
+        
+        public int id;
         public List<INode> Children { get; set; }
        
         public string Value { get; set; }
         public object Tag { get; set; } //to display WPF treeNode
         [YamlDotNet.Serialization.YamlIgnore]
         public int ImageIndex { get; set; }
-
-        public SequenceNode(string value, object tag, int imagexIndex)
+        public int getID()
+        {
+            return id;
+        }
+        public SequenceNode(string value, object tag, int imagexIndex, int index)
         {
             Value = value;
             Tag = tag;
             ImageIndex = imagexIndex;
+            id = index;
         }
 
         public int geNumChildren()

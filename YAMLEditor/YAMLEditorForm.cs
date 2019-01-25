@@ -26,8 +26,10 @@ namespace YAMLEditor
         public OpenFileDialog dialog;
         public TreeViewEventArgs e;
         public MappingNode mapNode;
+        public int id = 0;
         private CommandManager Manager = new CommandManager();
         private Timer saveTimer;
+        private ScalarNode scalarToEdit;
 
         public YAMLEditorForm()
         {
@@ -58,28 +60,109 @@ namespace YAMLEditor
                 mainTreeView.Nodes.Clear();
                 root = (mainTreeView.Nodes.Add(Path.GetFileName(dialog.FileName)));
                 root.ImageIndex = root.SelectedImageIndex = 3;
+                root.Name = id.ToString();
+                id++;
 
-                mapNode = new MappingNode(root.Text, true);
+                mapNode = new MappingNode(root.Text, 0,true);
                 var yaml = FileHandler.LoadFile(mapNode, dialog.FileName);
+
                 LoadTree.CreateTree(mapNode, yaml.Documents[0].RootNode as YamlMappingNode, root);
                 int i = 0;
                 // InitTimer();
+                setTreeId(root);
             }
         }
 
 
+        public void setTreeId(TreeNode root)
+        {
+            foreach (TreeNode child in root.Nodes)
+            {
+                child.Name = id.ToString();
+                id++;
+                if (child.Nodes.Count > 0)
+                {
+                    setTreeId(child);
+                }
 
+            }
+        }
 
         private void OnAfterSelect(object sender, TreeViewEventArgs e)
         {
-             mainPropertyGrid.SelectedObject = e.Node.Tag;
+            mainPropertyGrid.SelectedObject = e.Node.Tag;
             if (e.Node.Tag == null) return;
-             textBoxValue.Text = e.Node.Tag.ToString();
-             tagLabel.Text = e.Node.Tag.ToString();
+            int idNodeToEdit = Int32.Parse(e.Node.Name);
+            INode node = searchForNode(mapNode, idNodeToEdit);
+            if (node is ScalarNode)
+            {
+                ScalarNode scalar = (ScalarNode)searchForNode(mapNode, idNodeToEdit);
+                textBoxKey.Text = scalar.Key;
+                textBoxValue.Text = scalar.Value;
+            }
+            
+            
 
-             Console.WriteLine("item dentro do grid: " + e.Node.FullPath );
+
+
+            Console.WriteLine("item dentro do grid: " + e.Node.FullPath );
         }
 
+        private INode searchForNode(INode root,int idNodeToEdit)
+        {
+            bool found = false;
+            if (root is MappingNode)
+            {
+                MappingNode raiz = (MappingNode)root;
+
+                if (raiz.Children == null)
+                    return null;
+
+                foreach (INode child in raiz.Children)
+                {
+
+                    if (child.getID() == idNodeToEdit && child is ScalarNode)
+                    {
+                        scalarToEdit = (ScalarNode)child;
+                    }
+                    else if (child is MappingNode || child is SequenceNode)
+                    {
+                         searchForNode(child, idNodeToEdit);
+                        
+                    }
+                    continue;
+                }
+            }
+
+            if (root is SequenceNode)
+            {
+                SequenceNode raiz = (SequenceNode)root;
+                if (raiz.Children == null)
+                    return null;
+                foreach (INode child in raiz.Children)
+                {
+
+                    if (child.getID() == idNodeToEdit && child is ScalarNode)
+                    {
+                        scalarToEdit = (ScalarNode)child;
+
+                    }
+                    else if (child is MappingNode || child is SequenceNode)
+                    {
+                         searchForNode(child, idNodeToEdit);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+
+                }
+            }
+
+
+            return scalarToEdit;
+        }
         private void OnDoubleClick(object sender, EventArgs e)
         {
             if (mainTreeView.SelectedNode == null) return;
@@ -115,20 +198,34 @@ namespace YAMLEditor
         }
 
 
-        private void button1_Click(object sender, EventArgs e)//save btn
+        private void button1_Click(object sender, EventArgs e)//save to data struct
         {
-            TreeNode itemNode = null;
-            if (root == null) return;
-            itemNode = SearchTreeView(tagLabel.Text, root);
+            if (scalarToEdit == null) return;
 
             //verificacação null, para nao crashar
-            if (!string.IsNullOrEmpty(textBoxValue.Text))
-            {
-                var macro = new MacroCommand();
-                macro.Add(new ValueCommand(itemNode, textBoxValue));
-                Manager.Execute(macro);
-            }
+            var macro = new MacroCommand();
+            macro.Add(new ValueCommand(scalarToEdit, textBoxKey, textBoxValue));
+            Manager.Execute(macro);
 
+            TreeNode node = searchTreeEdit(root,scalarToEdit.id);
+            node.Text = textBoxKey.Text + ": " + textBoxValue.Text;
+
+        }
+
+        private TreeNode searchTreeEdit(TreeNode root, int id)
+        {
+            
+            foreach (TreeNode node in root.Nodes)
+            {
+                if (node.Name.Equals(id.ToString())) return node;
+
+                if (node.Nodes.Count > 0)
+                {
+                    TreeNode child = searchTreeEdit(node,id);
+                    if (child != null) return child;
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -180,7 +277,7 @@ namespace YAMLEditor
             YamlDocument doc = new YamlDocument(rootNode);
             var yaml = new YamlStream(doc);
 
-            using (TextWriter writer = File.CreateText("C:\\Users\\André\\source\\repos\\DISHASS3\\YAMLEditor\\bin\\Debug\\" + filename))
+            using (TextWriter writer = File.CreateText(".\\" + filename))
                 yaml.Save(writer, false);
         }
 
@@ -304,7 +401,7 @@ namespace YAMLEditor
                   //File.Delete(file);
               }
               */
-
+            if (root == null) return;
             var filename = root.Text;
             FileWriter(mapNode, filename);
         }
@@ -329,6 +426,11 @@ namespace YAMLEditor
         }
 
         private void mainPropertyGrid_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)//button remove
         {
 
         }

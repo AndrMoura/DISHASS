@@ -82,10 +82,12 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tagLabel = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.textBoxValue = new System.Windows.Forms.TextBox();
+            this.textBoxKey = new System.Windows.Forms.TextBox();
             this.mainPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.helpTabPage = new System.Windows.Forms.TabPage();
             this.mainWebBrowser = new System.Windows.Forms.WebBrowser();
+            this.textBoxValue = new System.Windows.Forms.TextBox();
+            this.btnRemove = new System.Windows.Forms.Button();
             this.mainMenuStrip.SuspendLayout();
             this.mainToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitContainer)).BeginInit();
@@ -281,7 +283,7 @@
             this.customizeToolStripMenuItem,
             this.optionsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 22);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 22);
             this.toolsToolStripMenuItem.Text = "&Tools";
             // 
             // customizeToolStripMenuItem
@@ -542,9 +544,11 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.btnRemove);
+            this.tabPage1.Controls.Add(this.textBoxValue);
             this.tabPage1.Controls.Add(this.tagLabel);
             this.tabPage1.Controls.Add(this.button1);
-            this.tabPage1.Controls.Add(this.textBoxValue);
+            this.tabPage1.Controls.Add(this.textBoxKey);
             this.tabPage1.Controls.Add(this.mainPropertyGrid);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(2);
@@ -565,20 +569,20 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(233, 267);
+            this.button1.Location = new System.Drawing.Point(277, 251);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 2;
-            this.button1.Text = "ADD";
+            this.button1.Text = "Edit";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // textBoxValue
+            // textBoxKey
             // 
-            this.textBoxValue.Location = new System.Drawing.Point(20, 267);
-            this.textBoxValue.Name = "textBoxValue";
-            this.textBoxValue.Size = new System.Drawing.Size(180, 20);
-            this.textBoxValue.TabIndex = 1;
+            this.textBoxKey.Location = new System.Drawing.Point(8, 265);
+            this.textBoxKey.Name = "textBoxKey";
+            this.textBoxKey.Size = new System.Drawing.Size(108, 20);
+            this.textBoxKey.TabIndex = 1;
             // 
             // mainPropertyGrid
             // 
@@ -612,6 +616,23 @@
             this.mainWebBrowser.Name = "mainWebBrowser";
             this.mainWebBrowser.Size = new System.Drawing.Size(356, 305);
             this.mainWebBrowser.TabIndex = 0;
+            // 
+            // textBoxValue
+            // 
+            this.textBoxValue.Location = new System.Drawing.Point(122, 265);
+            this.textBoxValue.Name = "textBoxValue";
+            this.textBoxValue.Size = new System.Drawing.Size(115, 20);
+            this.textBoxValue.TabIndex = 4;
+            // 
+            // btnRemove
+            // 
+            this.btnRemove.Location = new System.Drawing.Point(277, 280);
+            this.btnRemove.Name = "btnRemove";
+            this.btnRemove.Size = new System.Drawing.Size(75, 23);
+            this.btnRemove.TabIndex = 5;
+            this.btnRemove.Text = "Remove";
+            this.btnRemove.UseVisualStyleBackColor = true;
+            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
             // YAMLEditorForm
             // 
@@ -697,11 +718,13 @@
         private System.Windows.Forms.TabPage helpTabPage;
         private System.Windows.Forms.WebBrowser mainWebBrowser;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.TextBox textBoxValue;
+        private System.Windows.Forms.TextBox textBoxKey;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label tagLabel;
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.TextBox textBoxValue;
+        private System.Windows.Forms.Button btnRemove;
     }
 }
 

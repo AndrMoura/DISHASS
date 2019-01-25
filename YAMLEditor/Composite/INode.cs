@@ -14,7 +14,8 @@ namespace YAMLEditor.Composite
         object Tag { get; set; }
         string Value { get; set; }
         int ImageIndex { get; set; }
-
+        int getID();
+        
         INode SearchNode(INode node);
 
         YamlNode Accept(Visitor visitor, YamlNode node);

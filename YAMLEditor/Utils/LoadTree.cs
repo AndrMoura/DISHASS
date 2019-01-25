@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -14,6 +15,7 @@ namespace YAMLEditor.YamlUtils
 {
     class LoadTree
     {
+        public static int id = 1;
         public static void CreateTree(MappingNode myNode, YamlMappingNode node, TreeNode treeNode)
         {
             LoadChildren(myNode, node);
@@ -37,7 +39,8 @@ namespace YAMLEditor.YamlUtils
                     
                     if (scalar.Tag == "!include")
                        {
-                           MappingNode scalarToMapping = (MappingNode) root.AddChild(new MappingNode(scalar.Value, null, ImageLoad.GetImageIndex(scalar)));
+                           MappingNode scalarToMapping = (MappingNode) root.AddChild(new MappingNode(scalar.Value, null, ImageLoad.GetImageIndex(scalar), id));
+                           id++;
                          
                           var yaml = FileHandler.LoadFile(scalarToMapping as MappingNode, scalar.Value);
                           if (yaml.Documents.Count == 0) continue;
@@ -47,7 +50,8 @@ namespace YAMLEditor.YamlUtils
                           continue;
                        }
 
-                    ScalarNode scalarToSave = new ScalarNode(scalar.Value, child, scalar.Tag, ImageLoad.GetImageIndex(scalar), key.Value);
+                    ScalarNode scalarToSave = new ScalarNode(scalar.Value, child, scalar.Tag, ImageLoad.GetImageIndex(scalar), id ,key.Value);
+                    id++;
                     if (scalar.Tag == "!secret")
                        {
                            scalarToSave.Property = scalar.Tag;
@@ -58,14 +62,16 @@ namespace YAMLEditor.YamlUtils
                 else if (child.Value is YamlSequenceNode)
                 {
 
-                    var node = root.AddChild(new SequenceNode(key.Value, child.Value, ImageLoad.GetImageIndex(child.Value)));
+                    var node = root.AddChild(new SequenceNode(key.Value, child.Value, ImageLoad.GetImageIndex(child.Value),id));
+                    id++;
 
                     LoadChildren(node as SequenceNode, child.Value as YamlSequenceNode);
 
                 }
                 else if (child.Value is YamlMappingNode)
                 {
-                    var node = root.AddChild(new MappingNode(key.Value, child.Value, ImageLoad.GetImageIndex(child.Value)));
+                    var node = root.AddChild(new MappingNode(key.Value, child.Value, ImageLoad.GetImageIndex(child.Value), id));
+                    id++;
                     LoadChildren(node as MappingNode, child.Value as YamlMappingNode);
                 }
 
@@ -79,21 +85,24 @@ namespace YAMLEditor.YamlUtils
             {
                 if (child is YamlSequenceNode)
                 {
-                    var node = root.AddChild(new SequenceNode(root.Value, child, ImageLoad.GetImageIndex(child)));
+                    var node = root.AddChild(new SequenceNode(root.Value, child, ImageLoad.GetImageIndex(child),id));
+                    id++;
                     LoadChildren(node as SequenceNode, child as YamlSequenceNode);
                 }
                 else if (child is YamlMappingNode)
                 {
                     var teste = child as YamlMappingNode;         
-                    var node = root.AddChild(new MappingNode(root.Value, child, ImageLoad.GetImageIndex(child)));
+                    var node = root.AddChild(new MappingNode(root.Value, child, ImageLoad.GetImageIndex(child),id));
+                    id++;
                   
                     LoadChildren(node as MappingNode, child as YamlMappingNode);
                 }
                 else if (child is YamlScalarNode)
                 {
                     var scalar = child as YamlScalarNode;
-                    var node = root.AddChild(new ScalarNode(scalar.Value, child, scalar.Tag, ImageLoad.GetImageIndex(child)));
-                    
+                    var node = root.AddChild(new ScalarNode(scalar.Value, child, scalar.Tag, ImageLoad.GetImageIndex(child),id));
+                    id++;
+
                 }
             }
         }
@@ -111,7 +120,8 @@ namespace YAMLEditor.YamlUtils
                 {
                     ScalarNode scalarChild = (ScalarNode) child;
                     var node = treeNode.Nodes.Add($"{scalarChild.Key}: {scalarChild.Value}");
-            
+                    node.Tag = child.Tag;
+
                 }
                 else if (child is SequenceNode)
                 {
@@ -141,7 +151,8 @@ namespace YAMLEditor.YamlUtils
                     ScalarNode scalarChild = (ScalarNode)child;
                     var node = treeNode.Nodes.Add(scalarChild.Value);
                     node.ImageIndex = scalarChild.ImageIndex;
-                  
+                    node.Tag = child.Tag;
+
                 }
                 else if (child is SequenceNode)
                 {

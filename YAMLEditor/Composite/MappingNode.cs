@@ -11,7 +11,7 @@ namespace YAMLEditor.Composite
 {
     public class MappingNode : INode
     {
-        public static int id = 0; 
+        public int id;
         public List<INode> Children { get; set; }
 
         public bool IsRoot { get; set; }
@@ -20,12 +20,20 @@ namespace YAMLEditor.Composite
         [YamlDotNet.Serialization.YamlIgnore]
         public int ImageIndex { get; set; }
 
-        public MappingNode(string data, bool isRoot = false) { Value= data; IsRoot = isRoot; }
+        public int getID()
+        {
+            return id;
+        }
+        public MappingNode(string data, int index,bool isRoot = false)
+        {
+            Value = data;
+            IsRoot = isRoot; id = index;
+        }
        
 
-        public MappingNode(string value, object tag, int imageIndex)
+        public MappingNode(string value, object tag, int imageIndex,int index)
         {
-            id++;
+            this.id = index;
             this.Value = value;
             this.Tag = tag;
             this.ImageIndex = imageIndex;

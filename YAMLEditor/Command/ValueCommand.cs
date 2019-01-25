@@ -4,59 +4,61 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using YAMLEditor.Composite;
 
 
 namespace YAMLEditor.Command
 {
     public class ValueCommand:ICommand
     {
-        private TreeNode itemNode { get; }//arvore antiga
+        private ScalarNode itemNode { get; }//arvore antiga
         private TextBox value { get; }
+        private TextBox key { get; }
         private string previous { get; set; }
 
-        public ValueCommand(TreeNode itemNode, TextBox t)
+        public ValueCommand(ScalarNode itemNode, TextBox textboxKey, TextBox textBoxValue = null)
         {
             this.itemNode = itemNode;
-            this.value = t;
+            this.key = textboxKey;
+            this.value = textBoxValue;
 
         }
 
         public void Execute()
         {
-            //verificacação null, para nao crashar
-            if (itemNode != null)
+            if (value == null && key == null)
             {
-               
-                string valTemp = itemNode.Text;
-                previous = value.Text;
-                itemNode.Text = previous;
-                itemNode.Tag = previous;
-                previous = valTemp;
-                value.Text = itemNode.Text;
-              
-            };
+                itemNode.Key = "";
+                itemNode.Value = "";
+            }
+            else if(value != null && key != null)
+            {
+                itemNode.Key = key.Text;
+                itemNode.Value = value.Text;
+            }
+            else if (value != null && key == null)
+            {
+                itemNode.Key = "";
+                itemNode.Value = value.Text;
+            }
+            else if (value == null && key != null)
+            {
+                itemNode.Key = key.Text;
+                itemNode.Value = "";
+            }
+
 
         }
 
         public void Undo()
         {
-            string valTemp = itemNode.Text;
-            itemNode.Text = previous;
-            itemNode.Tag = previous;
-            value.Text = valTemp;
-            previous = valTemp;
-
+     
           
         }
 
         public void Redo()
         {
-            string valTemp = itemNode.Text;
-            
-            itemNode.Text = previous;
-            itemNode.Tag = previous;
-            previous = valTemp;
-            //value.Text = itemNode.Text;
+
 
         }
        
