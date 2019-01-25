@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using YamlDotNet.RepresentationModel;
+using YAMLEditor.Visitors;
 
 namespace YAMLEditor.Composite
 {
@@ -15,5 +16,7 @@ namespace YAMLEditor.Composite
         int ImageIndex { get; set; }
 
         INode SearchNode(INode node);
+
+        YamlNode Accept(Visitor visitor, YamlNode node);
     }
 }

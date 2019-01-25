@@ -4,20 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using YamlDotNet.RepresentationModel;
+using YAMLEditor.Visitors;
 
 namespace YAMLEditor.Composite
 {
     public class MappingNode : INode
     {
-        public static int id = 0;
-
+        public static int id = 0; 
         public List<INode> Children { get; set; }
 
+        public bool IsRoot { get; set; }
         public string Value { get; set; }
         public object Tag { get; set; } //to display WPF treeNode
         [YamlDotNet.Serialization.YamlIgnore]
         public int ImageIndex { get; set; }
-        public MappingNode(string data) { Value= data; }
+
+        public MappingNode(string data, bool isRoot = false) { Value= data; IsRoot = isRoot; }
        
 
         public MappingNode(string value, object tag, int imageIndex)
@@ -52,6 +55,14 @@ namespace YAMLEditor.Composite
           return null;
         }
 
+        public void Traverse(INode node)
+        {
+            foreach (INode child in Children)
+            {
+                Traverse(child);
+            }
+        }
+
         public int geNumChildren()
         {
             if (Children == null)
@@ -70,5 +81,30 @@ namespace YAMLEditor.Composite
             Children.Add(child);
             return child;
         }
+
+        public YamlNode Accept(Visitor visitor, YamlNode map)
+        {  
+          YamlMappingNode root = visitor.Visit(this, map); // novos yamlNodes //ultimo nodo a ser retornado
+
+            if(root == null) { root = map as YamlMappingNode; }
+            if (geNumChildren() == 0) return null;
+
+            foreach(INode children in Children)
+            {
+                children.Accept(visitor, root);
+            }
+
+            return map;
+        }
+
+        /* public void PerformOperation(Visitor visitor)
+         {
+            Accept(visitor);
+
+            foreach(var child in Children)
+            {
+                 child.Accept(visitor);
+            } 
+         }*/
     }
 }

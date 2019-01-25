@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using YamlDotNet.RepresentationModel;
+using YAMLEditor.Visitors;
 
 namespace YAMLEditor.Composite
 {
@@ -66,5 +67,32 @@ namespace YAMLEditor.Composite
             }
             return null;
         }
+
+        public void Traverse(INode node)
+        {
+            foreach(INode child in Children)
+            {
+                Traverse(child);
+            }
+        }
+
+        public YamlNode Accept(Visitor visitor, YamlNode map)
+        {
+            if(map is YamlMappingNode)
+            {
+                int i = 0;
+            }
+            YamlSequenceNode root = visitor.Visit(this, map); // novos yamlNodes //ultimo nodo a ser retornado
+
+            foreach (INode children in Children)
+            {
+                children.Accept(visitor, root);
+            }
+
+            return root;
+        }
+
+
+
     }
 }

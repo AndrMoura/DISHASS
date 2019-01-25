@@ -14,6 +14,8 @@ using YamlDotNet.RepresentationModel;
 using YAMLEditor.Command;
 using YAMLEditor.Composite;
 using YAMLEditor.LoadYaml;
+using YAMLEditor.Utils;
+using YAMLEditor.Visitors;
 using YAMLEditor.YamlUtils;
 
 namespace YAMLEditor
@@ -57,11 +59,7 @@ namespace YAMLEditor
                 root = (mainTreeView.Nodes.Add(Path.GetFileName(dialog.FileName)));
                 root.ImageIndex = root.SelectedImageIndex = 3;
 
-              // FileHandler yaml = new FileHandler(root, dialog.FileName); //PARA REMOVE SOON
-               /* NodeLoader<YamlMappingNode> node = new NodeLoader<YamlMappingNode>(new MapLoader(), root);
-                node.operate(root, yaml.YamlSteam.Documents[0].RootNode as YamlMappingNode);*/
-
-                mapNode = new MappingNode(root.Text);
+                mapNode = new MappingNode(root.Text, true);
                 var yaml = FileHandler.LoadFile(mapNode, dialog.FileName);
                 LoadTree.CreateTree(mapNode, yaml.Documents[0].RootNode as YamlMappingNode, root);
                 int i = 0;
@@ -171,20 +169,22 @@ namespace YAMLEditor
         /// </summary>
         /// <param name="n">root node of treeNode</param>
         /// <param name="filename"></param>
-        private void FileWriter(TreeNode n, string filename)
+        private void FileWriter(MappingNode n, string filename)
         {
             YamlMappingNode rootNode = new YamlMappingNode();
 
-            saveChildrenMapping(n, rootNode);
+            CreateNodeVisitor visitor = new CreateNodeVisitor();
+            //SaveTree.saveChildrenMapping(n, rootNode);
+           n.Accept(visitor, rootNode);
 
             YamlDocument doc = new YamlDocument(rootNode);
             var yaml = new YamlStream(doc);
 
-            using (TextWriter writer = File.CreateText("..\\bin\\Debug\\" + filename))
+            using (TextWriter writer = File.CreateText("C:\\Users\\André\\source\\repos\\DISHASS3\\YAMLEditor\\bin\\Debug\\" + filename))
                 yaml.Save(writer, false);
         }
 
-        private void saveChildrenMapping(TreeNode root, YamlMappingNode rootNode)
+       /* private void saveChildrenMapping(TreeNode root, YamlMappingNode rootNode)
         {
             var children = root.Nodes;
 
@@ -237,9 +237,9 @@ namespace YAMLEditor
                 }
             }
 
-        }
+        }*/
 
-        private void saveChildrenSequence(TreeNode children, YamlSequenceNode sequence)
+      /*  private void saveChildrenSequence(TreeNode children, YamlSequenceNode sequence)
         {
             foreach (TreeNode child in children.Nodes)
             {
@@ -272,7 +272,7 @@ namespace YAMLEditor
                     }
                 }
             }
-        }
+        }*/
 
         /// <summary>
         /// On save button click the data in bin/debug is sen
@@ -283,27 +283,30 @@ namespace YAMLEditor
         {
             //Console.WriteLine("asdasdsad" + Application.StartupPath);
             //save final: copiamos os ficheiros da pasta recovery para a pasta final(Config_files)
-            var finalDirectory = @".\\";
-            var recoveryFiles = Directory.GetFiles(@"..\\bin\\Debug\\", "*.yaml");
-            
-            if (recoveryFiles.Count() < 1) return;
-            foreach (var file in recoveryFiles)
-            {
-                try
-                {
-                    File.Move(file, finalDirectory + Path.GetFileName(file));
-                }
-                catch (IOException q)
-                {
-                    //When the file already exists in directory
-                    File.Delete(finalDirectory + Path.GetFileName(file));
-                    File.Move(file, finalDirectory + Path.GetFileName(file));
-                    Console.WriteLine(q);
-                }
-                
-                //File.Delete(file);
-            }
+            /*  var finalDirectory = @".\\";
+              var recoveryFiles = Directory.GetFiles(@"..\\bin\\Debug\\", "*.yaml");
 
+              if (recoveryFiles.Count() < 1) return;
+              foreach (var file in recoveryFiles)
+              {
+                  try
+                  {
+                      File.Move(file, finalDirectory + Path.GetFileName(file));
+                  }
+                  catch (IOException q)
+                  {
+                      //When the file already exists in directory
+                      File.Delete(finalDirectory + Path.GetFileName(file));
+                      File.Move(file, finalDirectory + Path.GetFileName(file));
+                      Console.WriteLine(q);
+                  }
+
+                  //File.Delete(file);
+              }
+              */
+
+            var filename = root.Text;
+            FileWriter(mapNode, filename);
         }
 
         
@@ -322,9 +325,12 @@ namespace YAMLEditor
         private void timerSaveEvent(object sender, EventArgs e)
         {
             var filename = root.Text;
-            FileWriter(root, filename);
+           // FileWriter(root, filename);
         }
 
+        private void mainPropertyGrid_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }

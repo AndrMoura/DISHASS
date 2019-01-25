@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using YamlDotNet.RepresentationModel;
 using YamlDotNet.Serialization;
+using YAMLEditor.Visitors;
+
 namespace YAMLEditor.Composite
 {
    public class ScalarNode : INode
@@ -37,5 +40,13 @@ namespace YAMLEditor.Composite
                 return this;
             return null;
         }
+
+        public YamlNode Accept(Visitor visitor, YamlNode map)
+        {
+            YamlScalarNode root = visitor.Visit(this, map); // novos yamlNodes //ultimo nodo a ser retornado
+            return root;
+        }
+
+
     }
 }

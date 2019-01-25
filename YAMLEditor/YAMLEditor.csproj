@@ -67,6 +67,10 @@
     <Compile Include="LoadYaml\MapLoader.cs" />
     <Compile Include="LoadYaml\NodeLoader.cs" />
     <Compile Include="LoadYaml\SequenceLoader.cs" />
+    <Compile Include="Utils\SaveDelegate.cs" />
+    <Compile Include="Utils\SaveTree.cs" />
+    <Compile Include="Visitors\CreateNodeVisitor.cs" />
+    <Compile Include="Visitors\Visitor.cs" />
     <Compile Include="YAMLEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,7 +79,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="YamlUtils\LoadTree.cs" />
+    <Compile Include="Utils\LoadTree.cs" />
     <EmbeddedResource Include="YAMLEditorForm.resx">
       <DependentUpon>YAMLEditorForm.cs</DependentUpon>
     </EmbeddedResource>
