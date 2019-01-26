@@ -15,7 +15,9 @@ namespace YAMLEditor.Composite
         string Value { get; set; }
         int ImageIndex { get; set; }
         int getID();
-        
+        INode RemoveNode(INode node, INode nodeToRemove);
+        List<INode> Children { get; set; }
+
         INode SearchNode(INode node);
 
         YamlNode Accept(Visitor visitor, YamlNode node);

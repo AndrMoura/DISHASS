@@ -29,7 +29,9 @@ namespace YAMLEditor
         public int id = 0;
         private CommandManager Manager = new CommandManager();
         private Timer saveTimer;
-        private ScalarNode scalarToEdit;
+        private INode nodeSelected;
+        private ValueCommand vl;
+        private RemoveCommand remove;
 
         public YAMLEditorForm()
         {
@@ -90,7 +92,16 @@ namespace YAMLEditor
 
         private void OnAfterSelect(object sender, TreeViewEventArgs e)
         {
+            
             mainPropertyGrid.SelectedObject = e.Node.Tag;
+            if (e.Node.Name == "0")
+            {
+                btnRemove.Enabled = false;
+            }
+            else
+            {
+                btnRemove.Enabled = true;
+            }
             if (e.Node.Tag == null) return;
             int idNodeToEdit = Int32.Parse(e.Node.Name);
             INode node = searchForNode(mapNode, idNodeToEdit);
@@ -100,10 +111,6 @@ namespace YAMLEditor
                 textBoxKey.Text = scalar.Key;
                 textBoxValue.Text = scalar.Value;
             }
-            
-            
-
-
 
             Console.WriteLine("item dentro do grid: " + e.Node.FullPath );
         }
@@ -121,9 +128,9 @@ namespace YAMLEditor
                 foreach (INode child in raiz.Children)
                 {
 
-                    if (child.getID() == idNodeToEdit && child is ScalarNode)
+                    if (child.getID() == idNodeToEdit)
                     {
-                        scalarToEdit = (ScalarNode)child;
+                        nodeSelected = child;
                     }
                     else if (child is MappingNode || child is SequenceNode)
                     {
@@ -142,9 +149,9 @@ namespace YAMLEditor
                 foreach (INode child in raiz.Children)
                 {
 
-                    if (child.getID() == idNodeToEdit && child is ScalarNode)
+                    if (child.getID() == idNodeToEdit)
                     {
-                        scalarToEdit = (ScalarNode)child;
+                        nodeSelected = child;
 
                     }
                     else if (child is MappingNode || child is SequenceNode)
@@ -156,12 +163,10 @@ namespace YAMLEditor
                         continue;
                     }
 
-
                 }
             }
 
-
-            return scalarToEdit;
+            return nodeSelected;
         }
         private void OnDoubleClick(object sender, EventArgs e)
         {
@@ -200,15 +205,17 @@ namespace YAMLEditor
 
         private void button1_Click(object sender, EventArgs e)//save to data struct
         {
-            if (scalarToEdit == null) return;
-
+            if (nodeSelected == null) return;
+            ScalarNode tempScalar = (ScalarNode)nodeSelected;
+            TreeNode node = searchTreeEdit(root, tempScalar.id);
             //verificacação null, para nao crashar
             var macro = new MacroCommand();
-            macro.Add(new ValueCommand(scalarToEdit, textBoxKey, textBoxValue));
+            vl = new ValueCommand(mapNode, node, tempScalar, textBoxKey, textBoxValue);
+            macro.Add(vl);
             Manager.Execute(macro);
-
-            TreeNode node = searchTreeEdit(root,scalarToEdit.id);
-            node.Text = textBoxKey.Text + ": " + textBoxValue.Text;
+            textBoxKey.Text = "";
+            textBoxValue.Text = "";
+            //node.Text = textBoxKey.Text + ": " + textBoxValue.Text;
 
         }
 
@@ -253,12 +260,16 @@ namespace YAMLEditor
         {
             
             Manager.Undo();
-            
+            textBoxKey.Text = "";
+            textBoxValue.Text = "";
+            mapNode = vl.passRoot();
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)//redo btn
         {
-            Manager.Redo();
+            Manager.Redo(); textBoxKey.Text = "";
+            textBoxValue.Text = "";
+            mapNode = vl.passRoot();
         }
 
         /// <summary>
@@ -432,7 +443,13 @@ namespace YAMLEditor
 
         private void btnRemove_Click(object sender, EventArgs e)//button remove
         {
-
+            
+            TreeNode nodeTreeviewEdit = searchTreeEdit(root, nodeSelected.getID());
+            var macro = new MacroCommand();
+            remove = new RemoveCommand(mapNode, nodeSelected,root, nodeTreeviewEdit);
+            macro.Add(remove);
+            Manager.Execute(macro);
         }
+  
     }
 }

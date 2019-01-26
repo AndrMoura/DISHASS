@@ -80,14 +80,15 @@
             this.mainImageList = new System.Windows.Forms.ImageList(this.components);
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btnRemove = new System.Windows.Forms.Button();
+            this.textBoxValue = new System.Windows.Forms.TextBox();
             this.tagLabel = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.textBoxKey = new System.Windows.Forms.TextBox();
             this.mainPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.helpTabPage = new System.Windows.Forms.TabPage();
             this.mainWebBrowser = new System.Windows.Forms.WebBrowser();
-            this.textBoxValue = new System.Windows.Forms.TextBox();
-            this.btnRemove = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.mainMenuStrip.SuspendLayout();
             this.mainToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitContainer)).BeginInit();
@@ -559,6 +560,23 @@
             this.tabPage1.Text = "Properties";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // btnRemove
+            // 
+            this.btnRemove.Location = new System.Drawing.Point(277, 280);
+            this.btnRemove.Name = "btnRemove";
+            this.btnRemove.Size = new System.Drawing.Size(75, 23);
+            this.btnRemove.TabIndex = 5;
+            this.btnRemove.Text = "Remove";
+            this.btnRemove.UseVisualStyleBackColor = true;
+            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
+            // 
+            // textBoxValue
+            // 
+            this.textBoxValue.Location = new System.Drawing.Point(122, 265);
+            this.textBoxValue.Name = "textBoxValue";
+            this.textBoxValue.Size = new System.Drawing.Size(115, 20);
+            this.textBoxValue.TabIndex = 4;
+            // 
             // tagLabel
             // 
             this.tagLabel.AutoSize = true;
@@ -617,28 +635,19 @@
             this.mainWebBrowser.Size = new System.Drawing.Size(356, 305);
             this.mainWebBrowser.TabIndex = 0;
             // 
-            // textBoxValue
+            // textBox1
             // 
-            this.textBoxValue.Location = new System.Drawing.Point(122, 265);
-            this.textBoxValue.Name = "textBoxValue";
-            this.textBoxValue.Size = new System.Drawing.Size(115, 20);
-            this.textBoxValue.TabIndex = 4;
-            // 
-            // btnRemove
-            // 
-            this.btnRemove.Location = new System.Drawing.Point(277, 280);
-            this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(75, 23);
-            this.btnRemove.TabIndex = 5;
-            this.btnRemove.Text = "Remove";
-            this.btnRemove.UseVisualStyleBackColor = true;
-            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
+            this.textBox1.Location = new System.Drawing.Point(533, 385);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(108, 20);
+            this.textBox1.TabIndex = 6;
             // 
             // YAMLEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(695, 406);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.mainSplitContainer);
             this.Controls.Add(this.mainToolStrip);
             this.Controls.Add(this.mainStatusStrip);
@@ -725,6 +734,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButton3;
         private System.Windows.Forms.TextBox textBoxValue;
         private System.Windows.Forms.Button btnRemove;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 

@@ -9,16 +9,19 @@ using YAMLEditor.Visitors;
 
 namespace YAMLEditor.Composite
 {
+    [Serializable]
     public class SequenceNode : INode
     {
         
         public int id;
         public List<INode> Children { get; set; }
-       
+        public static bool found = false;
         public string Value { get; set; }
         public object Tag { get; set; } //to display WPF treeNode
         [YamlDotNet.Serialization.YamlIgnore]
         public int ImageIndex { get; set; }
+        public INode father;
+
         public int getID()
         {
             return id;
@@ -29,6 +32,11 @@ namespace YAMLEditor.Composite
             Tag = tag;
             ImageIndex = imagexIndex;
             id = index;
+        }
+
+        public SequenceNode()
+        {
+
         }
 
         public int geNumChildren()
@@ -93,6 +101,26 @@ namespace YAMLEditor.Composite
         }
 
 
+        public INode RemoveNode(INode root, INode node)
+        {
 
+            foreach (INode nodeToRemove in root.Children)
+            {
+                if (root.Children.Contains(node))
+                {
+                    father = root;
+                    break;
+                }
+                else
+                {
+
+                    RemoveNode(nodeToRemove, node);
+                }
+            }
+
+            return father;
+        }
+
+     
     }
 }

@@ -9,7 +9,8 @@ using YAMLEditor.Visitors;
 
 namespace YAMLEditor.Composite
 {
-   public class ScalarNode : INode
+    [Serializable]
+    public class ScalarNode : INode
    {
 
 
@@ -22,6 +23,7 @@ namespace YAMLEditor.Composite
 
         public string Property { get; set; }
         public int ImageIndex { get; set; }
+        public List<INode> Children { get; set; }
 
         public ScalarNode(string value, object tag, string nodeType, int imageIndex, int index, string key = null)
         {
@@ -49,7 +51,11 @@ namespace YAMLEditor.Composite
             YamlScalarNode root = visitor.Visit(this, map); // novos yamlNodes //ultimo nodo a ser retornado
             return root;
         }
+       public INode RemoveNode(INode root, INode node)
+       {
 
+           return null;
+       }
 
     }
 }

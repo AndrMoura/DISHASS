@@ -50,7 +50,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Command\AutoSaveCommand.cs" />
+    <Compile Include="Command\RemoveCommand.cs" />
     <Compile Include="Command\CommandManager.cs" />
     <Compile Include="Command\ICommand.cs" />
     <Compile Include="Command\ICommandManager.cs" />
@@ -60,6 +60,7 @@
     <Compile Include="Composite\MappingNode.cs" />
     <Compile Include="Composite\ScalarNode.cs" />
     <Compile Include="Composite\SequenceNode.cs" />
+    <Compile Include="DeepCopy.cs" />
     <Compile Include="FunctionAux.cs" />
     <Compile Include="LoadYaml\FileHandler.cs" />
     <Compile Include="LoadYaml\ImageLoad.cs" />

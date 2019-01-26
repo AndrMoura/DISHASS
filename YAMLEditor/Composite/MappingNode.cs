@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -9,6 +12,7 @@ using YAMLEditor.Visitors;
 
 namespace YAMLEditor.Composite
 {
+    [Serializable]
     public class MappingNode : INode
     {
         public int id;
@@ -20,6 +24,9 @@ namespace YAMLEditor.Composite
         [YamlDotNet.Serialization.YamlIgnore]
         public int ImageIndex { get; set; }
 
+        
+        public List<INode> list = new List<INode>();
+
         public int getID()
         {
             return id;
@@ -29,6 +36,7 @@ namespace YAMLEditor.Composite
             Value = data;
             IsRoot = isRoot; id = index;
         }
+        public MappingNode( ) { }
        
 
         public MappingNode(string value, object tag, int imageIndex,int index)
@@ -39,6 +47,7 @@ namespace YAMLEditor.Composite
             this.ImageIndex = imageIndex;
         }
 
+ 
 
         public IList<INode> getChildren()
         {
@@ -104,6 +113,50 @@ namespace YAMLEditor.Composite
 
             return map;
         }
+
+
+        public INode RemoveNode(INode root, INode node)
+        {
+            SequenceNode fatherseq = new SequenceNode();
+            MappingNode fathermap = new MappingNode();
+            foreach (INode nodeToRemove in root.Children)
+            {
+                if (root.Children.Contains(node))
+                {
+                    if (root is MappingNode)
+                    {
+                        fathermap = (MappingNode)root;
+                        break;
+                    }
+                    else if(root is SequenceNode)
+                    {
+                        fatherseq = (SequenceNode)root;
+                        break;
+                    }
+                   
+                }
+                else
+                {
+                    if (fathermap == root || fatherseq == root) break;
+                    RemoveNode(nodeToRemove, node);
+                }
+            }
+
+            if (fathermap.Tag != null)
+            {
+                return fathermap;
+            }
+            else if(fatherseq.Tag != null)
+            {
+                return fatherseq;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+      
 
         /* public void PerformOperation(Visitor visitor)
          {
