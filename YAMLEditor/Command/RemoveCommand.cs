@@ -33,16 +33,33 @@ namespace YAMLEditor.Command
 
         public void Execute()
         {
-            TreeNode tempTreeNode = (TreeNode) root.Clone();
+            TreeNode tempTreeNode = (TreeNode) editor.root.Clone();
             int i = 0;
             MappingNode tempMaxRoot = maxRoot.DeepClone();
 
-            nodeToRemove.Remove();
+            RemoveTreeNode(nodeToRemove);
             itemNode.RemoveNode(itemNode);
+     
+            TreeNode teste = (TreeNode)editor.root.Clone();
+            TreeNode temTest= editor.searchTreeEdit(teste, itemNode.getID());
 
             previousMaxRoot = tempMaxRoot;
             previousTreeNode = tempTreeNode;
 
+
+        }
+
+        public void RemoveTreeNode(TreeNode nodeToRemove)
+        {
+            if (nodeToRemove.Parent.Nodes.Count == 1)
+            {
+                nodeToRemove.Parent.Remove();
+              
+            }
+            else
+            {
+                nodeToRemove.Remove();
+            }
 
         }
 

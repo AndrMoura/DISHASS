@@ -39,8 +39,8 @@ namespace YAMLEditor
         {
             InitializeComponent();
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-
+          
+         
         }
 
         private void OnExit(object sender, EventArgs e)
@@ -209,14 +209,15 @@ namespace YAMLEditor
             }
         }
 
-      
+        public int position =0;
         private void toolStripButton1_Click(object sender, EventArgs e)//faz refresh
         {
-            mainTreeView.Nodes.Clear();
-            root = mainTreeView.Nodes.Add(Path.GetFileName(dialog.FileName));
-            root.ImageIndex = root.SelectedImageIndex = 3;
-            // LoadFile(root, dialog.FileName);
-            root.Expand();
+            
+            TextBox text = new TextBox();
+            text.Text = "";
+            text.Top = position * 25;
+            panelTeste.Controls.Add(text);
+            position = position + 1;
         }
 
 
@@ -599,12 +600,24 @@ namespace YAMLEditor
         private void btnRemove_Click(object sender, EventArgs e)//button remove
         {
             if (root == null) return;
+            
             TreeNode[] nodeTreeviewEdit = root.Nodes.Find(nodeSelected.getID().ToString(),true);
             var macro = new MacroCommand();
             remove = new RemoveCommand(ref mapNode, nodeSelected, ref root, nodeTreeviewEdit[0],this);
             macro.Add(remove);
             Manager.Execute(macro);
-          
+
+           
+
+            mainTreeView.Nodes.Clear();
+
+            mainTreeView.Nodes.Add(root);
+
+
+
+            
+            root.Expand();
+
         }
 
         public void expandAllNodes(INode node)

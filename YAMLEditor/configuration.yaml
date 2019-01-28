@@ -1,8 +1,8 @@
 homeassistant:
   auth_providers:
   - type: homeassistant
-  - type: trusted_networks
-  - type: legacy_api_password
+  - type: homeassistqwqqwant
+  - type: qqqqq
   latitude: aaaaa
   longitude: longitude_home
   elevation: TESTE
@@ -24,7 +24,7 @@ homeassistant:
           - switch.driveway
           - switch.garage_relay_switch
           - switch.wemoporch
-          - script.tv_youtube_on
+          - 123
           include_domains:
           - cover
     cloud2:
@@ -49,10 +49,6 @@ homeassistant:
   - /home/homeassistant/.homeassistant/downloads
   - /tmp
   - /home/homeassistant/.homeassistant/downloads/camera/
-lovelace:
-  mode: yaml
-updater:
-  include_used_components: true
 python_script: 33333
 weather:
 - platform: yweather
@@ -64,9 +60,6 @@ panel_custom:
   sidebar_icon: mdi:heart-off
   webcomponent_path: /home/homeassistant/.homeassistant/panels/no-love.html
 zone:
-  name: 1
-  latitude: 2
-  longitude: 3
   radius: 4
   icon: CU
 zone 2:

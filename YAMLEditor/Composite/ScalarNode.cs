@@ -64,7 +64,11 @@ namespace YAMLEditor.Composite
        public void RemoveNode(INode node)
        {
            parent.Children.Remove(node);
-       }
+           if (node.getParent().Children.Count == 0 && node.getParent() is SequenceNode || node.getParent().Children.Count == 0 && node.getParent() is MappingNode)
+           {
+               node.getParent().getParent().RemoveNode(node.getParent());
+           }
+        }
 
     }
 }

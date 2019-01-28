@@ -129,13 +129,12 @@ namespace YAMLEditor.Composite
         public void RemoveNode(INode node)
         {
             node.getParent().Children.Remove(node);
-            if (node.getParent().Children.Count == 0 && node.getParent() is SequenceNode)
+            if (node.getParent().Children.Count == 0 && node.getParent() is SequenceNode || node.getParent().Children.Count == 0 && node.getParent() is MappingNode)
             {
                 node.getParent().getParent().RemoveNode(node.getParent());
             }
         }
 
-      
 
         /* public void PerformOperation(Visitor visitor)
          {
