@@ -14,50 +14,90 @@ namespace YAMLEditor.Command
         public MappingNode maxRoot { get; set; }
         private TreeNode nodeToEdit;
         private ScalarNode itemNode { get; }//arvore antiga
-        private TextBox value { get; }
-        private TextBox key { get; }
+        private string value { get; }
+        private string key { get; }
         private MappingNode previousMaxRoot;
         private TreeNode previousTreeNode;
         public bool isValue { get; set; }
+        public YAMLEditorForm editor;
+        private DataGridView dataGridView;
+        public INode updateNodeGlobal;
 
-        public ValueCommand(MappingNode maxRoot, TreeNode nodeToEdit, ScalarNode itemNode, TextBox textboxKey, TextBox textBoxValue = null)
+
+        public ValueCommand(MappingNode maxRoot, TreeNode nodeToEdit, ScalarNode itemNode, string key, YAMLEditorForm editor,string value = null)
         {
             this.itemNode = itemNode;
-            this.key = textboxKey;
-            this.value = textBoxValue;
+            this.key = key;
+            this.value = value;
             this.maxRoot = maxRoot;
             this.nodeToEdit = nodeToEdit;
+            this.editor = editor;
+
+        }
+        public ValueCommand(YAMLEditorForm editor, DataGridView dataGridView, INode updateNodeGlobal)
+        {
+            this.editor = editor;
+            this.dataGridView = dataGridView;
+            this.updateNodeGlobal = updateNodeGlobal;
 
         }
 
 
         public void Execute()
         {
-            MappingNode temp = maxRoot.DeepClone();
-            TreeNode tempTreeNode = nodeToEdit.DeepClone();
+            MappingNode temp = editor.mapNode.DeepClone();
+            TreeNode tempTreeNode = (TreeNode) editor.root.Clone();
 
-            if (value == null && key == null)
+            if (dataGridView != null)
             {
-                itemNode.Key = "";
-                itemNode.Value = "";
-            }
-            else if(value != null && key != null)
-            {
-                itemNode.Key = key.Text;
-                itemNode.Value = value.Text;
-            }
-            else if (value != null && key == null)
-            {
-                itemNode.Key = "";
-                itemNode.Value = value.Text;
-            }
-            else if (value == null && key != null)
-            {
-                itemNode.Key = key.Text;
-                itemNode.Value = "";
-            }
-            nodeToEdit.Text = key.Text + ": " + value.Text;
+                int index = 0;
+                foreach (INode child in updateNodeGlobal.Children)
+                {
+                    if (child is ScalarNode)
+                    {
+                        ScalarNode tempScalar = (ScalarNode)child;
+                        TreeNode node = editor.searchTreeEdit(editor.root, tempScalar.id);
 
+                        var key = dataGridView.Rows[index].Cells[0].EditedFormattedValue.ToString();
+                        var value = dataGridView.Rows[index].Cells[1].EditedFormattedValue.ToString();
+
+                        tempScalar.Key = key;
+                        tempScalar.Value = value;
+
+                        node.Text = key + ": " + value;
+                    }
+                    index++;
+
+                }
+            }
+            else
+            {
+                
+
+                if (value == null && key == null)
+                {
+                    itemNode.Key = "";
+                    itemNode.Value = "";
+                }
+                else if (value != null && key != null)
+                {
+                    itemNode.Key = key;
+                    itemNode.Value = value;
+                }
+                else if (value != null && key == null)
+                {
+                    itemNode.Key = "";
+                    itemNode.Value = value;
+                }
+                else if (value == null && key != null)
+                {
+                    itemNode.Key = key;
+                    itemNode.Value = "";
+                }
+                nodeToEdit.Text = key + ": " + value;
+
+                
+            }
             previousMaxRoot = temp;
             previousTreeNode = tempTreeNode;
 
@@ -78,11 +118,11 @@ namespace YAMLEditor.Command
 
         private void doit()
         {
-            MappingNode temp = maxRoot.DeepClone();
-            TreeNode tempTreeNode = nodeToEdit.DeepClone();
+            MappingNode temp = editor.mapNode.DeepClone();
+            TreeNode tempTreeNode = (TreeNode)editor.root.Clone();
 
-            maxRoot = previousMaxRoot;
-            nodeToEdit.Text = previousTreeNode.Text;
+            editor.mapNode = previousMaxRoot;
+            editor.root = previousTreeNode;
 
             previousMaxRoot = temp;
             previousTreeNode = tempTreeNode;

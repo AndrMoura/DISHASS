@@ -74,19 +74,6 @@ namespace YAMLEditor
                 setTreeId(root);
                 root.Expand();
 
-                //---------------------------------
-                TextBox teste = new TextBox();
-                teste.Visible = true;
-                teste.Text = "fffffffffffffffffffffffffffff";
-                teste.Location = new Point(0,0);
-                //mainSplitContainer.
-                //mainSplitContainer.Controls.Add(teste);
-                //mainPropertyGrid.Controls.Add(teste);
-
-
-
-
-
             }
         }
 
@@ -240,22 +227,35 @@ namespace YAMLEditor
             Console.WriteLine("valor sender: " + e.ChangedItem.Value);
         }
         
-        private void button1_Click(object sender, EventArgs e)//save to data struct
+        private void button1_Click(object sender, EventArgs e)//edit to data struct
         {
+            int index = 0;
             if (nodeSelected == null) return;
-
-            ScalarNode tempScalar = (ScalarNode)nodeSelected;
-            TreeNode node = searchTreeEdit(root, tempScalar.id);
-    
             var macro = new MacroCommand();
-            //vl = new ValueCommand(mapNode, node, tempScalar, textBoxKey, textBoxValue);
-            macro.Add(vl);
-            Manager.Execute(macro);
 
-    
+            if (nodeSelected is ScalarNode)
+            {
+                ScalarNode tempScalar = (ScalarNode)nodeSelected;
+                TreeNode node = searchTreeEdit(root, tempScalar.id);
+
+                var key = dataGridView1.Rows[0].Cells[0].EditedFormattedValue.ToString();
+                var value = dataGridView1.Rows[0].Cells[1].EditedFormattedValue.ToString();
+                vl = new ValueCommand(mapNode, node, tempScalar, key,this, value);
+                macro.Add(vl);
+                Manager.Execute(macro);
+            }
+            else
+            {
+                vl = new ValueCommand(this, dataGridView1, nodeSelected);  
+                macro.Add(vl);
+                Manager.Execute(macro);
+            }
+
+
+
         }
 
-        private TreeNode searchTreeEdit(TreeNode root, int id)
+        public TreeNode searchTreeEdit(TreeNode root, int id)
         {
             foreach (TreeNode node in root.Nodes)
             {
@@ -295,16 +295,46 @@ namespace YAMLEditor
         {
             
             Manager.Undo();
- 
-           
-            if (vl != null)
+
+            if (nodeSelected is ScalarNode)
             {
-                if (vl.isValue)
-                {
-                    mapNode = vl.passRoot();
-                    vl.isValue = false;
-                }
+                ScalarNode temp = (ScalarNode)searchForNode(mapNode, nodeSelected.getID());
+
+                string[] row = new string[] { temp.Key, temp.Value };
+                dataGridView1.Rows.RemoveAt(0);
+                dataGridView1.Rows.Add(row);
+
+                mainTreeView.Nodes.Clear();
+                mainTreeView.Nodes.Add(root);
+                root.Expand();
+                TreeNode node = searchTreeEdit(root, nodeSelected.getParent().getID());
+                node.Expand();
             }
+            else
+            {
+                INode temp = searchForNode(mapNode, nodeSelected.getID());
+                foreach (INode child in temp.Children)
+                {
+                    if (child is ScalarNode)
+                    {
+                        ScalarNode temp2 = (ScalarNode)child;
+                        string[] row = new string[] { temp2.Key, temp2.Value };
+                        dataGridView1.Rows.RemoveAt(0);
+                        dataGridView1.Rows.Add(row);
+                    }
+                }
+
+                mainTreeView.Nodes.Clear();
+                mainTreeView.Nodes.Add(root);
+                root.Expand();
+                TreeNode node = searchTreeEdit(root, nodeSelected.getID());
+                node.Expand();
+
+
+            }
+            
+            
+
             if (remove != null)
             {
                 if (RemoveCommand.isValue == true)
@@ -319,22 +349,46 @@ namespace YAMLEditor
                     root.Expand();
                 }
             }
-
-
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)//redo btn
         {
             Manager.Redo();
-   
-            if (vl != null)
+
+            if (nodeSelected is ScalarNode)
             {
-                if (vl.isValue)
-                {
-                    mapNode = vl.passRoot();
-                    vl.isValue = false;
-                }
+                ScalarNode temp = (ScalarNode)searchForNode(mapNode, nodeSelected.getID());
+
+                string[] row = new string[] { temp.Key, temp.Value };
+                dataGridView1.Rows.RemoveAt(0);
+                dataGridView1.Rows.Add(row);
+
+                mainTreeView.Nodes.Clear();
+                mainTreeView.Nodes.Add(root);
+                root.Expand();
+                TreeNode node = searchTreeEdit(root, nodeSelected.getParent().getID());
+                node.Expand();
             }
+            else
+            {
+                INode temp = searchForNode(mapNode, nodeSelected.getID());
+                foreach (INode child in temp.Children)
+                {
+                    if (child is ScalarNode)
+                    {
+                        ScalarNode temp2 = (ScalarNode)child;
+                        string[] row = new string[] { temp2.Key, temp2.Value };
+                        dataGridView1.Rows.RemoveAt(0);
+                        dataGridView1.Rows.Add(row);
+                    }
+                }
+                mainTreeView.Nodes.Clear();
+                mainTreeView.Nodes.Add(root);
+                root.Expand();
+                TreeNode node = searchTreeEdit(root, nodeSelected.getID());
+                node.Expand();
+            }
+
             if (remove != null)
             {
                 if (RemoveCommand.isValue == true)
@@ -367,7 +421,7 @@ namespace YAMLEditor
             root.Name = id.ToString();
             id++;
             LoadTree.LoadTreeNode(root, mapingNode);
-           setTreeId(root);
+            setTreeId(root);
             root.Expand();
         }
 
