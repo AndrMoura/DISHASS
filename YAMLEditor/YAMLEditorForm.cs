@@ -60,18 +60,20 @@ namespace YAMLEditor
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(dialog.FileName) ?? "");
 
                 mainTreeView.Nodes.Clear();
+                
                 root = (mainTreeView.Nodes.Add(Path.GetFileName(dialog.FileName)));
                 root.ImageIndex = root.SelectedImageIndex = 3;
                 root.Name = id.ToString();
                 id++;
-
-                mapNode = new MappingNode(root.Text, 0,true);
+                
+                mapNode = new MappingNode(root.Text, 0, true);
                 var yaml = FileHandler.LoadFile(mapNode, dialog.FileName);
 
                 LoadTree.CreateTree(mapNode, yaml.Documents[0].RootNode as YamlMappingNode, root);
                 int i = 0;
                 // InitTimer();
                 setTreeId(root);
+                root.Expand();
             }
         }
 
@@ -262,14 +264,80 @@ namespace YAMLEditor
             Manager.Undo();
             textBoxKey.Text = "";
             textBoxValue.Text = "";
-            mapNode = vl.passRoot();
+           
+            if (vl != null)
+            {
+                if (vl.isValue)
+                {
+                    mapNode = vl.passRoot();
+                    vl.isValue = false;
+                }
+            }
+            if (remove != null)
+            {
+                if (RemoveCommand.isValue == true)
+                {
+                  //  mapNode = remove.passRoot();
+                    //root = null;
+                   // root = remove.PassRootTreeNode();
+                    mainTreeView.Nodes.Clear();
+                    mainTreeView.Nodes.Add(root);
+                    // setNewTreeRoot(root, mapNode);
+                    RemoveCommand.isValue = false;
+                    root.Expand();
+                }
+            }
+
+
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)//redo btn
         {
-            Manager.Redo(); textBoxKey.Text = "";
+            Manager.Redo();
+            textBoxKey.Text = "";
             textBoxValue.Text = "";
-            mapNode = vl.passRoot();
+            if (vl != null)
+            {
+                if (vl.isValue)
+                {
+                    mapNode = vl.passRoot();
+                    vl.isValue = false;
+                }
+            }
+            if (remove != null)
+            {
+                if (RemoveCommand.isValue == true)
+                {
+                  //  mapNode = remove.passRoot();
+                    //root = null;
+                   // root = remove.PassRootTreeNode();
+                    mainTreeView.Nodes.Clear();
+                    mainTreeView.Nodes.Add(root);
+                    // setNewTreeRoot(root, mapNode);
+                    RemoveCommand.isValue = false;
+                    root.Expand();
+                }
+            }
+
+        }
+
+
+        public void setNewTreeRoot(TreeNode root, MappingNode mapingNode)
+        {
+            mainTreeView.Nodes.Clear();
+            if (root == null) return;
+            var filename = root.Text;
+            FileWriter(mapNode, filename);
+
+            root = (mainTreeView.Nodes.Add(Path.GetFileName(dialog.FileName)));
+            
+            root.ImageIndex = root.SelectedImageIndex = 3;
+            this.id = 0;
+            root.Name = id.ToString();
+            id++;
+            LoadTree.LoadTreeNode(root, mapingNode);
+           setTreeId(root);
+            root.Expand();
         }
 
         /// <summary>
@@ -443,12 +511,13 @@ namespace YAMLEditor
 
         private void btnRemove_Click(object sender, EventArgs e)//button remove
         {
-            
-            TreeNode nodeTreeviewEdit = searchTreeEdit(root, nodeSelected.getID());
+
+            TreeNode[] nodeTreeviewEdit = root.Nodes.Find(nodeSelected.getID().ToString(),true);
             var macro = new MacroCommand();
-            remove = new RemoveCommand(mapNode, nodeSelected,root, nodeTreeviewEdit);
+            remove = new RemoveCommand(ref mapNode, nodeSelected, ref root, nodeTreeviewEdit[0],this);
             macro.Add(remove);
             Manager.Execute(macro);
+          
         }
   
     }

@@ -39,7 +39,7 @@ namespace YAMLEditor.YamlUtils
                     
                     if (scalar.Tag == "!include")
                        {
-                           MappingNode scalarToMapping = (MappingNode) root.AddChild(new MappingNode(scalar.Value, null, ImageLoad.GetImageIndex(scalar), id));
+                           MappingNode scalarToMapping = (MappingNode) root.AddChild(new MappingNode(scalar.Value, null, ImageLoad.GetImageIndex(scalar), id,root));
                            id++;
                          
                           var yaml = FileHandler.LoadFile(scalarToMapping as MappingNode, scalar.Value);
@@ -50,7 +50,7 @@ namespace YAMLEditor.YamlUtils
                           continue;
                        }
 
-                    ScalarNode scalarToSave = new ScalarNode(scalar.Value, child, scalar.Tag, ImageLoad.GetImageIndex(scalar), id ,key.Value);
+                    ScalarNode scalarToSave = new ScalarNode(scalar.Value, child, scalar.Tag, ImageLoad.GetImageIndex(scalar), id , root, key.Value);
                     id++;
                     if (scalar.Tag == "!secret")
                        {
@@ -62,7 +62,7 @@ namespace YAMLEditor.YamlUtils
                 else if (child.Value is YamlSequenceNode)
                 {
 
-                    var node = root.AddChild(new SequenceNode(key.Value, child.Value, ImageLoad.GetImageIndex(child.Value),id));
+                    var node = root.AddChild(new SequenceNode(key.Value, child.Value, ImageLoad.GetImageIndex(child.Value),id,root));
                     id++;
 
                     LoadChildren(node as SequenceNode, child.Value as YamlSequenceNode);
@@ -70,7 +70,7 @@ namespace YAMLEditor.YamlUtils
                 }
                 else if (child.Value is YamlMappingNode)
                 {
-                    var node = root.AddChild(new MappingNode(key.Value, child.Value, ImageLoad.GetImageIndex(child.Value), id));
+                    var node = root.AddChild(new MappingNode(key.Value, child.Value, ImageLoad.GetImageIndex(child.Value), id,root));
                     id++;
                     LoadChildren(node as MappingNode, child.Value as YamlMappingNode);
                 }
@@ -85,14 +85,14 @@ namespace YAMLEditor.YamlUtils
             {
                 if (child is YamlSequenceNode)
                 {
-                    var node = root.AddChild(new SequenceNode(root.Value, child, ImageLoad.GetImageIndex(child),id));
+                    var node = root.AddChild(new SequenceNode(root.Value, child, ImageLoad.GetImageIndex(child),id,root));
                     id++;
                     LoadChildren(node as SequenceNode, child as YamlSequenceNode);
                 }
                 else if (child is YamlMappingNode)
                 {
                     var teste = child as YamlMappingNode;         
-                    var node = root.AddChild(new MappingNode(root.Value, child, ImageLoad.GetImageIndex(child),id));
+                    var node = root.AddChild(new MappingNode(root.Value, child, ImageLoad.GetImageIndex(child),id,root));
                     id++;
                   
                     LoadChildren(node as MappingNode, child as YamlMappingNode);
@@ -100,7 +100,7 @@ namespace YAMLEditor.YamlUtils
                 else if (child is YamlScalarNode)
                 {
                     var scalar = child as YamlScalarNode;
-                    var node = root.AddChild(new ScalarNode(scalar.Value, child, scalar.Tag, ImageLoad.GetImageIndex(child),id));
+                    var node = root.AddChild(new ScalarNode(scalar.Value, child, scalar.Tag, ImageLoad.GetImageIndex(child),id,root));
                     id++;
 
                 }

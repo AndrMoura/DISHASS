@@ -15,10 +15,11 @@ namespace YAMLEditor.Composite
         string Value { get; set; }
         int ImageIndex { get; set; }
         int getID();
-        INode RemoveNode(INode node, INode nodeToRemove);
+        INode getParent();
         List<INode> Children { get; set; }
-
+        void RemoveNode(INode node);
         INode SearchNode(INode node);
+       
 
         YamlNode Accept(Visitor visitor, YamlNode node);
     }

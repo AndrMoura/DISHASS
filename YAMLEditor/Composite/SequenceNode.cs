@@ -20,18 +20,23 @@ namespace YAMLEditor.Composite
         public object Tag { get; set; } //to display WPF treeNode
         [YamlDotNet.Serialization.YamlIgnore]
         public int ImageIndex { get; set; }
-        public INode father;
+        public INode parent;
 
         public int getID()
         {
             return id;
         }
-        public SequenceNode(string value, object tag, int imagexIndex, int index)
+        public INode getParent()
+        {
+            return parent;
+        }
+        public SequenceNode(string value, object tag, int imagexIndex, int index,INode parent)
         {
             Value = value;
             Tag = tag;
             ImageIndex = imagexIndex;
             id = index;
+            this.parent = parent;
         }
 
         public SequenceNode()
@@ -100,27 +105,15 @@ namespace YAMLEditor.Composite
             return root;
         }
 
-
-        public INode RemoveNode(INode root, INode node)
+        public void RemoveNode(INode node)
         {
-
-            foreach (INode nodeToRemove in root.Children)
+            node.getParent().Children.Remove(node);
+            if (node.getParent().Children.Count == 0 && node.getParent() is SequenceNode)
             {
-                if (root.Children.Contains(node))
-                {
-                    father = root;
-                    break;
-                }
-                else
-                {
-
-                    RemoveNode(nodeToRemove, node);
-                }
+                node.getParent().getParent().RemoveNode(node.getParent());
             }
-
-            return father;
         }
 
-     
+
     }
 }

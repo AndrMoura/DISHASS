@@ -18,6 +18,7 @@ namespace YAMLEditor.Command
         private TextBox key { get; }
         private MappingNode previousMaxRoot;
         private TreeNode previousTreeNode;
+        public bool isValue { get; set; }
 
         public ValueCommand(MappingNode maxRoot, TreeNode nodeToEdit, ScalarNode itemNode, TextBox textboxKey, TextBox textBoxValue = null)
         {
@@ -66,13 +67,13 @@ namespace YAMLEditor.Command
         public void Undo()
         {
            doit();
-
+            isValue = true;
         }
 
         public void Redo()
         {
             doit();
-
+            isValue = true;
         }
 
         private void doit()

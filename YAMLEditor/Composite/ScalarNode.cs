@@ -24,8 +24,9 @@ namespace YAMLEditor.Composite
         public string Property { get; set; }
         public int ImageIndex { get; set; }
         public List<INode> Children { get; set; }
+       public INode parent;
 
-        public ScalarNode(string value, object tag, string nodeType, int imageIndex, int index, string key = null)
+        public ScalarNode(string value, object tag, string nodeType, int imageIndex, int index,INode parent, string key = null)
         {
             
             this.Key = key;
@@ -34,8 +35,13 @@ namespace YAMLEditor.Composite
             this.Tag = tag;
             this.NodeType = nodeType;
             this.ImageIndex = imageIndex;
+            this.parent = parent;
         }
-       public int getID()
+       public INode getParent()
+       {
+           return parent;
+       }
+        public int getID()
        {
            return id;
        }
@@ -51,10 +57,10 @@ namespace YAMLEditor.Composite
             YamlScalarNode root = visitor.Visit(this, map); // novos yamlNodes //ultimo nodo a ser retornado
             return root;
         }
-       public INode RemoveNode(INode root, INode node)
-       {
 
-           return null;
+       public void RemoveNode(INode node)
+       {
+           parent.Children.Remove(node);
        }
 
     }

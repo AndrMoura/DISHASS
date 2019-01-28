@@ -37,7 +37,7 @@ namespace YAMLEditor.Command
             if (!HasUndo()) return;
             Commands[Position].Undo();
             Position = Position - 1;
-
+            Console.WriteLine("Undo");
             //colocar um notify para atualizar a arvore
             //Notify();
         }
