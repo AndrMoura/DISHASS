@@ -5,7 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.Remoting.Channels;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -36,21 +38,18 @@ namespace YAMLEditor
         public YAMLEditorForm()
         {
             InitializeComponent();
-            
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
 
         }
 
         private void OnExit(object sender, EventArgs e)
         {
             Application.Exit();
-
         }
 
         private void OnOpen(object sender, EventArgs e)
         {       
-            //start timer
-           
-
             dialog = new OpenFileDialog()
             { Filter = @"Yaml files (*.yaml)|*.yaml|All files (*.*)|*.*", DefaultExt = "yaml" };
 
@@ -74,6 +73,20 @@ namespace YAMLEditor
                 // InitTimer();
                 setTreeId(root);
                 root.Expand();
+
+                //---------------------------------
+                TextBox teste = new TextBox();
+                teste.Visible = true;
+                teste.Text = "fffffffffffffffffffffffffffff";
+                teste.Location = new Point(0,0);
+                //mainSplitContainer.
+                //mainSplitContainer.Controls.Add(teste);
+                //mainPropertyGrid.Controls.Add(teste);
+
+
+
+
+
             }
         }
 
@@ -94,27 +107,50 @@ namespace YAMLEditor
 
         private void OnAfterSelect(object sender, TreeViewEventArgs e)
         {
-            
-            mainPropertyGrid.SelectedObject = e.Node.Tag;
-            if (e.Node.Name == "0")
-            {
-                btnRemove.Enabled = false;
-            }
-            else
-            {
-                btnRemove.Enabled = true;
-            }
-            if (e.Node.Tag == null) return;
+            dataGridView1.Visible = true;
             int idNodeToEdit = Int32.Parse(e.Node.Name);
-            INode node = searchForNode(mapNode, idNodeToEdit);
-            if (node is ScalarNode)
+            dataGridView1.Rows.Clear();
+            INode nodeTeste = searchForNode(mapNode, idNodeToEdit);
+            if (nodeTeste.Children != null)
             {
-                ScalarNode scalar = (ScalarNode)searchForNode(mapNode, idNodeToEdit);
-                textBoxKey.Text = scalar.Key;
-                textBoxValue.Text = scalar.Value;
+                foreach (INode child in nodeTeste.Children)
+                {
+                    if (child is ScalarNode)
+                    {
+                        ScalarNode temp = (ScalarNode)child;
+                        string[] row = new string[] { temp.Key, temp.Value };
+                        dataGridView1.Rows.Add(row);
+                    }
+                }
             }
 
-            Console.WriteLine("item dentro do grid: " + e.Node.FullPath );
+            else
+            {
+                
+                ScalarNode temp = (ScalarNode)nodeTeste;
+                string[] row = new string[] { temp.Key, temp.Value };
+                dataGridView1.Rows.Add(row);
+
+                //dataGridView1.Visible = false;
+                //if (e.Node.Name == "0")
+                //{
+                //    btnRemove.Enabled = false;
+                //}
+                //else
+                //{
+                //    btnRemove.Enabled = true;
+                //}
+                //if (e.Node.Tag == null) return;
+
+                //INode node = searchForNode(mapNode, idNodeToEdit);
+                //if (node is ScalarNode)
+                //{
+                //    ScalarNode scalar = (ScalarNode)searchForNode(mapNode, idNodeToEdit);
+                //    textBoxKey.Text = scalar.Key;
+                //    textBoxValue.Text = scalar.Value;
+                //}
+            }
+           
         }
 
         private INode searchForNode(INode root,int idNodeToEdit)
@@ -203,27 +239,24 @@ namespace YAMLEditor
         {
             Console.WriteLine("valor sender: " + e.ChangedItem.Value);
         }
-
-
+        
         private void button1_Click(object sender, EventArgs e)//save to data struct
         {
             if (nodeSelected == null) return;
+
             ScalarNode tempScalar = (ScalarNode)nodeSelected;
             TreeNode node = searchTreeEdit(root, tempScalar.id);
-            //verificacação null, para nao crashar
+    
             var macro = new MacroCommand();
-            vl = new ValueCommand(mapNode, node, tempScalar, textBoxKey, textBoxValue);
+            //vl = new ValueCommand(mapNode, node, tempScalar, textBoxKey, textBoxValue);
             macro.Add(vl);
             Manager.Execute(macro);
-            textBoxKey.Text = "";
-            textBoxValue.Text = "";
-            //node.Text = textBoxKey.Text + ": " + textBoxValue.Text;
 
+    
         }
 
         private TreeNode searchTreeEdit(TreeNode root, int id)
         {
-            
             foreach (TreeNode node in root.Nodes)
             {
                 if (node.Name.Equals(id.ToString())) return node;
@@ -262,8 +295,7 @@ namespace YAMLEditor
         {
             
             Manager.Undo();
-            textBoxKey.Text = "";
-            textBoxValue.Text = "";
+ 
            
             if (vl != null)
             {
@@ -294,8 +326,7 @@ namespace YAMLEditor
         private void toolStripButton3_Click(object sender, EventArgs e)//redo btn
         {
             Manager.Redo();
-            textBoxKey.Text = "";
-            textBoxValue.Text = "";
+   
             if (vl != null)
             {
                 if (vl.isValue)
@@ -519,6 +550,8 @@ namespace YAMLEditor
             Manager.Execute(macro);
           
         }
+
+    
   
     }
 }

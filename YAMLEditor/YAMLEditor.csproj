@@ -60,6 +60,7 @@
     <Compile Include="Composite\MappingNode.cs" />
     <Compile Include="Composite\ScalarNode.cs" />
     <Compile Include="Composite\SequenceNode.cs" />
+    <Compile Include="Composite\Teste.cs" />
     <Compile Include="DeepCopy.cs" />
     <Compile Include="FunctionAux.cs" />
     <Compile Include="LoadYaml\FileHandler.cs" />

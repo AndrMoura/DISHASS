@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace YAMLEditor.Composite
     public class ScalarNode : INode
    {
 
-
+       
         public int id;
         public string Value { get; set; }
         public string Key { get; set; }
@@ -23,6 +24,8 @@ namespace YAMLEditor.Composite
 
         public string Property { get; set; }
         public int ImageIndex { get; set; }
+
+       [TypeConverter(typeof(Teste))]
         public List<INode> Children { get; set; }
        public INode parent;
 

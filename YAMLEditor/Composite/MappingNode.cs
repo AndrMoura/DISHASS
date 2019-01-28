@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -16,6 +17,7 @@ namespace YAMLEditor.Composite
     public class MappingNode : INode
     {
         public int id;
+        [TypeConverter(typeof(Teste))]
         public List<INode> Children { get; set; }
 
         public bool IsRoot { get; set; }

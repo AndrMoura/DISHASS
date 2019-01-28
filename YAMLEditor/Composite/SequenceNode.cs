@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -14,6 +15,8 @@ namespace YAMLEditor.Composite
     {
         
         public int id;
+
+        [TypeConverter(typeof(Teste))]
         public List<INode> Children { get; set; }
         public static bool found = false;
         public string Value { get; set; }
