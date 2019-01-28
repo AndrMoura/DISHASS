@@ -229,7 +229,7 @@ namespace YAMLEditor
         
         private void button1_Click(object sender, EventArgs e)//edit to data struct
         {
-            int index = 0;
+
             if (nodeSelected == null) return;
             var macro = new MacroCommand();
 
@@ -308,7 +308,9 @@ namespace YAMLEditor
                 mainTreeView.Nodes.Add(root);
                 root.Expand();
                 TreeNode node = searchTreeEdit(root, nodeSelected.getParent().getID());
+                if (node == null) return;
                 node.Expand();
+                expandAllNodes(nodeSelected);
             }
             else
             {
@@ -327,13 +329,12 @@ namespace YAMLEditor
                 mainTreeView.Nodes.Clear();
                 mainTreeView.Nodes.Add(root);
                 root.Expand();
-                TreeNode node = searchTreeEdit(root, nodeSelected.getID());
-                node.Expand();
 
+                expandAllNodes(nodeSelected);
 
             }
             
-            
+
 
             if (remove != null)
             {
@@ -367,7 +368,9 @@ namespace YAMLEditor
                 mainTreeView.Nodes.Add(root);
                 root.Expand();
                 TreeNode node = searchTreeEdit(root, nodeSelected.getParent().getID());
+                if (node == null) return;
                 node.Expand();
+                expandAllNodes(nodeSelected);
             }
             else
             {
@@ -385,8 +388,7 @@ namespace YAMLEditor
                 mainTreeView.Nodes.Clear();
                 mainTreeView.Nodes.Add(root);
                 root.Expand();
-                TreeNode node = searchTreeEdit(root, nodeSelected.getID());
-                node.Expand();
+                expandAllNodes(nodeSelected);
             }
 
             if (remove != null)
@@ -596,7 +598,7 @@ namespace YAMLEditor
 
         private void btnRemove_Click(object sender, EventArgs e)//button remove
         {
-
+            if (root == null) return;
             TreeNode[] nodeTreeviewEdit = root.Nodes.Find(nodeSelected.getID().ToString(),true);
             var macro = new MacroCommand();
             remove = new RemoveCommand(ref mapNode, nodeSelected, ref root, nodeTreeviewEdit[0],this);
@@ -605,7 +607,19 @@ namespace YAMLEditor
           
         }
 
-    
+        public void expandAllNodes(INode node)
+        {
+            TreeNode treeNode = searchTreeEdit(root, node.getParent().getID());
+            if (node.getParent().Tag != null)
+            {
+                treeNode.Expand();
+                expandAllNodes(node.getParent());
+            }
+            else
+            {
+                return;
+            }
+        }
   
     }
 }
