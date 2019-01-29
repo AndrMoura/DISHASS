@@ -59,17 +59,21 @@ namespace YAMLEditor
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(dialog.FileName) ?? "");
 
                 mainTreeView.Nodes.Clear();
-                
+
+                LoadTree.id = 1;
+
+                id = 0;
+                root = new TreeNode();
                 root = (mainTreeView.Nodes.Add(Path.GetFileName(dialog.FileName)));
                 root.ImageIndex = root.SelectedImageIndex = 3;
                 root.Name = id.ToString();
                 id++;
-                
+
+                mapNode = null;
                 mapNode = new MappingNode(root.Text, 0, true);
                 var yaml = FileHandler.LoadFile(mapNode, dialog.FileName);
 
                 LoadTree.CreateTree(mapNode, yaml.Documents[0].RootNode as YamlMappingNode, root);
-                int i = 0;
                 // InitTimer();
                 setTreeId(root);
                 root.Expand();
@@ -98,6 +102,7 @@ namespace YAMLEditor
             int idNodeToEdit = Int32.Parse(e.Node.Name);
             dataGridView1.Rows.Clear();
             INode nodeTeste = searchForNode(mapNode, idNodeToEdit);
+            if (nodeSelected == null) return;
             if (nodeTeste.Children != null)
             {
                 foreach (INode child in nodeTeste.Children)
@@ -610,12 +615,7 @@ namespace YAMLEditor
            
 
             mainTreeView.Nodes.Clear();
-
             mainTreeView.Nodes.Add(root);
-
-
-
-            
             root.Expand();
 
         }
