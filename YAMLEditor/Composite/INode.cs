@@ -19,7 +19,9 @@ namespace YAMLEditor.Composite
         List<INode> Children { get; set; }
         void RemoveNode(INode node);
         INode SearchNode(INode node);
-       
+        INode searchNodeByName(string node);
+        INode AddChild(INode child);
+
 
         YamlNode Accept(Visitor visitor, YamlNode node);
     }

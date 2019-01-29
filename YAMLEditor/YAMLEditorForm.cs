@@ -11,7 +11,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using AeroWizard;
 using YamlDotNet.RepresentationModel;
 using YAMLEditor.Command;
 using YAMLEditor.Composite;
@@ -118,7 +118,7 @@ namespace YAMLEditor
 
             else
             {
-                
+                if (nodeTeste is MappingNode) return;
                 ScalarNode temp = (ScalarNode)nodeTeste;
                 string[] row = new string[] { temp.Key, temp.Value };
                 dataGridView1.Rows.Add(row);
@@ -633,6 +633,43 @@ namespace YAMLEditor
                 return;
             }
         }
-  
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            WizardComponent wizard = new WizardComponent(this);
+            wizard.ShowDialog();
+            wizard.tableData();
+            if (root == null) return;
+            var filename = root.Text;
+            FileWriter(mapNode, filename);
+
+
+            LoadTree.id = 1;
+            id = 0;
+            root = new TreeNode();
+            root.Name = id.ToString();
+            id++;
+            root.Text = Path.GetFileName(dialog.FileName);
+            root.ImageIndex = root.SelectedImageIndex = 3;
+
+            mainTreeView.Nodes.Clear();
+
+            mapNode = null;
+            mapNode = new MappingNode(root.Text, 0, true);
+            var yaml = FileHandler.LoadFile(mapNode, dialog.FileName);
+
+            LoadTree.CreateTree(mapNode, yaml.Documents[0].RootNode as YamlMappingNode, root);
+            mainTreeView.Nodes.Add(root);
+            setTreeId(root);
+            root.Expand();
+        }
+
+
+        private void setStruckID(MappingNode node)
+        {
+
+        }
+        
     }
 }

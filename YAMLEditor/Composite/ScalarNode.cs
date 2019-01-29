@@ -68,7 +68,17 @@ namespace YAMLEditor.Composite
            {
                node.getParent().getParent().RemoveNode(node.getParent());
            }
-        }
+       }
+       public INode searchNodeByName(string nameToFind)
+       {
+          return null;
 
+          
+       }
+
+        public INode AddChild(INode child)
+        {
+            return null;
+        }
     }
 }

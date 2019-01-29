@@ -103,10 +103,25 @@ light:
   brightness_value_template: '{{ value }}'
   retain: true
   optimistic: false
+  qos: 0
+- platform: group
+  name: Living Room Lights
+  entities:
+  - light.lifx3
+  - light.lifxnrguest
+  - light.lifxnrkitchen
 - platform: group
   name: Master Lights
-- platform: sdds
-  name: asdsad
+  entities:
+  - light.hue_color_lamp_1
+  - light.hue_color_lamp_2
+  - light.hue_color_lamp_3
+wemo:
+  static:
+  - 192.168.2.104
+  - 192.168.2.130
+  - 192.168.2.206
+  - 192.168.2.237
 arlo:
   username: arlo_user
   password: arlo_password
@@ -523,4 +538,10 @@ frontend.yaml: {}
 recorder.yaml: {}
 logbook.yaml: {}
 history.yaml: {}
+BOOM:
+- asd: asd
+  aasd: asdasd
+  asdasd: asdasd
+- sadasdasdasd: asdasdasdasd
+  asdasdasd: asdasdasd
 ...

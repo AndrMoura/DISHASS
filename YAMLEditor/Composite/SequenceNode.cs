@@ -117,6 +117,23 @@ namespace YAMLEditor.Composite
             }
         }
 
+        public INode searchNodeByName(string nameToFind)
+        {
+            if (Children == null) return null;
+            if (Value.Equals(nameToFind))
+                return this;
 
+            foreach (INode child in Children)
+            {
+                var found = child.searchNodeByName(nameToFind);
+
+                if (found != null)
+                {
+                    Console.WriteLine("Node Found");
+                    return found;
+                }
+            }
+            return null;
+        }
     }
 }
