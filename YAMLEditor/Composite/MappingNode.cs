@@ -111,19 +111,24 @@ namespace YAMLEditor.Composite
         }
 
         public YamlNode Accept(Visitor visitor, YamlNode map)
-        {  
-          YamlMappingNode root = visitor.Visit(this, map); // novos yamlNodes //ultimo nodo a ser retornado
+        {
+            YamlMappingNode root = visitor.Visit(this, map); // novos yamlNodes //ultimo nodo a ser retornado
 
-            if(root == null) { root = map as YamlMappingNode; }
+            if (root == null) { return null; }
+
+            if (root?.Tag == "ignore")
+                root = map as YamlMappingNode;
+
             if (geNumChildren() == 0) return null;
 
-            foreach(INode children in Children)
+            foreach (INode children in Children)
             {
                 children.Accept(visitor, root);
             }
 
             return map;
         }
+
 
 
         public void RemoveNode(INode node)

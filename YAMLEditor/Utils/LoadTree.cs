@@ -39,7 +39,7 @@ namespace YAMLEditor.YamlUtils
                     
                     if (scalar.Tag == "!include")
                     {
-                           MappingNode scalarToMapping = (MappingNode) root.AddChild(new MappingNode(scalar.Value, null, ImageLoad.GetImageIndex(scalar), id,root));
+                           MappingNode scalarToMapping = (MappingNode) root.AddChild(new MappingNode(scalar.Value, scalar.Tag, ImageLoad.GetImageIndex(scalar), id,root));
                            id++;
                          
                           var yaml = FileHandler.LoadFile(scalarToMapping as MappingNode, scalar.Value);

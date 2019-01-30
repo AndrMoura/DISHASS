@@ -74,7 +74,7 @@ namespace YAMLEditor
                 var yaml = FileHandler.LoadFile(mapNode, dialog.FileName);
 
                 LoadTree.CreateTree(mapNode, yaml.Documents[0].RootNode as YamlMappingNode, root);
-                InitTimer();
+                //InitTimer();
                 setTreeId(root);
                 root.Expand();
 
@@ -350,7 +350,8 @@ namespace YAMLEditor
             }
             catch (Exception exception)
             {
-                RefreshAll();
+                Console.WriteLine(exception.Message);
+                //RefreshAll();
             }
 
         }
@@ -443,8 +444,10 @@ namespace YAMLEditor
         /// </summary>
         /// <param name="n">root node of treeNode</param>
         /// <param name="filename"></param>
-        private void FileWriter(MappingNode n, string filename)
+        public static void FileWriter(MappingNode n, string filename)
         {
+            n.IsRoot = true;
+
             YamlMappingNode rootNode = new YamlMappingNode();
 
             CreateNodeVisitor visitor = new CreateNodeVisitor();
@@ -454,7 +457,7 @@ namespace YAMLEditor
             YamlDocument doc = new YamlDocument(rootNode);
             var yaml = new YamlStream(doc);
 
-            using (TextWriter writer = File.CreateText(".\\bin\\" + filename))
+            using (TextWriter writer = File.CreateText(".\\" + filename))
                 yaml.Save(writer, false);
         }
 
@@ -472,23 +475,23 @@ namespace YAMLEditor
             var finalDirectory = @".\\";
             var recoveryFiles = Directory.GetFiles(@".\\bin\\", "*.yaml");
 
-            if (recoveryFiles.Count() < 1) return;
-            foreach (var file in recoveryFiles)
-            {
-                try
-                {
-                  File.Move(file, finalDirectory + Path.GetFileName(file));
-                }
-                catch (IOException q)
-                {
-                    //When the file already exists in directory
-                    File.Delete(finalDirectory + Path.GetFileName(file));
-                    File.Move(file, finalDirectory + Path.GetFileName(file));
-                    Console.WriteLine(q);
-                }
+            //if (recoveryFiles.Count() < 1) return;
+            //foreach (var file in recoveryFiles)
+            //{
+            //    try
+            //    {
+            //      File.Move(file, finalDirectory + Path.GetFileName(file));
+            //    }
+            //    catch (IOException q)
+            //    {
+            //        //When the file already exists in directory
+            //        File.Delete(finalDirectory + Path.GetFileName(file));
+            //        File.Move(file, finalDirectory + Path.GetFileName(file));
+            //        Console.WriteLine(q);
+            //    }
 
-              //File.Delete(file);
-            }
+            //  //File.Delete(file);
+            //}
          
             if (root == null) return;
             var filename = root.Text;
