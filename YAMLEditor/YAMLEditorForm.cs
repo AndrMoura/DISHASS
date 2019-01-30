@@ -74,7 +74,7 @@ namespace YAMLEditor
                 var yaml = FileHandler.LoadFile(mapNode, dialog.FileName);
 
                 LoadTree.CreateTree(mapNode, yaml.Documents[0].RootNode as YamlMappingNode, root);
-                // InitTimer();
+                InitTimer();
                 setTreeId(root);
                 root.Expand();
 
@@ -418,9 +418,7 @@ namespace YAMLEditor
                 RefreshAll();
             }
             
-
         }
-
 
         public void setNewTreeRoot(TreeNode root, MappingNode mapingNode)
         {
@@ -456,99 +454,11 @@ namespace YAMLEditor
             YamlDocument doc = new YamlDocument(rootNode);
             var yaml = new YamlStream(doc);
 
-            using (TextWriter writer = File.CreateText(".\\" + filename))
+            using (TextWriter writer = File.CreateText(".\\bin\\" + filename))
                 yaml.Save(writer, false);
         }
 
-       /* private void saveChildrenMapping(TreeNode root, YamlMappingNode rootNode)
-        {
-            var children = root.Nodes;
-
-            foreach (TreeNode child in children)
-            {
-                var propertyInfo = child.Tag.GetType().GetProperty("NodeType"); //reflexao
-
-                if (propertyInfo != null)
-                {
-                    var value = propertyInfo.GetValue(child.Tag, null);
-                    if (value.ToString().Equals("Sequence"))
-                    {
-                        YamlSequenceNode sequenceNode = new YamlSequenceNode();
-                        rootNode.Add(child.Text, sequenceNode);
-                        saveChildrenSequence(child, sequenceNode);
-                    }
-                    else if (value.ToString().Equals("Mapping"))
-                    {
-                        YamlMappingNode mappingNode = new YamlMappingNode();
-                        rootNode.Add(child.Text, mappingNode);
-                        saveChildrenMapping(child, mappingNode);
-                    }
-                }
-                else
-                { //scalar found
-                    var propInfo = child.Tag.GetType().GetProperty("Key"); //reflexao
-                    var key = propInfo.GetValue(child.Tag, null);
-                    var propInfo2 = child.Tag.GetType().GetProperty("Value"); //reflexao
-                    var value2 = propInfo2.GetValue(child.Tag, null);
-
-                    YamlScalarNode scalar = new YamlScalarNode();
-                    scalar.Value = value2.ToString();
-
-                    if (value2.ToString().Substring(Math.Max(0, value2.ToString().Length - 5)) == ".yaml")
-                    {
-                        var prop = child.Tag.GetType().GetProperty("Value");
-                        var filename = prop.GetValue(child.Tag, null);
-                        FileWriter(child, filename.ToString());
-                        rootNode.Add(key.ToString(), new YamlScalarNode(scalar.Value) { Tag = "!include" });
-                        continue;
-                    }
-                    else if (child.ImageIndex is 2)
-                    {
-                        rootNode.Add(key.ToString(), new YamlScalarNode(scalar.Value) { Tag = "!secret" });
-                    }
-                    else
-                    {
-                        rootNode.Add(key.ToString(), scalar.Value); //normal scalar
-                    }  
-                }
-            }
-
-        }*/
-
-      /*  private void saveChildrenSequence(TreeNode children, YamlSequenceNode sequence)
-        {
-            foreach (TreeNode child in children.Nodes)
-            {
-                var propertyInfo = child.Tag.GetType().GetProperty("NodeType"); //reflexao
-
-                if (propertyInfo != null)
-                {
-                    var value = propertyInfo.GetValue(child.Tag, null);
-                    if (value.ToString().Equals("Sequence"))
-                    {
-                        YamlSequenceNode sequenceNode = new YamlSequenceNode();
-                        sequence.Add(sequenceNode);
-                        saveChildrenSequence(child, sequenceNode);
-                    }
-                    else if (value.ToString().Equals("Mapping"))
-                    {
-                        YamlMappingNode mappingNode = new YamlMappingNode();
-                        sequence.Add(mappingNode);
-                        saveChildrenMapping(child, mappingNode);
-                    }
-                    else if (value.ToString().Equals("Scalar"))
-                    {
-
-                        var propInfo2 = child.Tag.GetType().GetProperty("Value"); //reflexao
-                        var value2 = propInfo2.GetValue(child.Tag, null);
-                        YamlScalarNode scalar = new YamlScalarNode();
-                        scalar.Value = value2 as string;
-
-                        sequence.Add(scalar);
-                    }
-                }
-            }
-        }*/
+   
 
         /// <summary>
         /// On save button click the data in bin/debug is sen
@@ -559,27 +469,27 @@ namespace YAMLEditor
         {
             //Console.WriteLine("asdasdsad" + Application.StartupPath);
             //save final: copiamos os ficheiros da pasta recovery para a pasta final(Config_files)
-            /*  var finalDirectory = @".\\";
-              var recoveryFiles = Directory.GetFiles(@"..\\bin\\Debug\\", "*.yaml");
+            var finalDirectory = @".\\";
+            var recoveryFiles = Directory.GetFiles(@".\\bin\\", "*.yaml");
 
-              if (recoveryFiles.Count() < 1) return;
-              foreach (var file in recoveryFiles)
-              {
-                  try
-                  {
-                      File.Move(file, finalDirectory + Path.GetFileName(file));
-                  }
-                  catch (IOException q)
-                  {
-                      //When the file already exists in directory
-                      File.Delete(finalDirectory + Path.GetFileName(file));
-                      File.Move(file, finalDirectory + Path.GetFileName(file));
-                      Console.WriteLine(q);
-                  }
+            if (recoveryFiles.Count() < 1) return;
+            foreach (var file in recoveryFiles)
+            {
+                try
+                {
+                  File.Move(file, finalDirectory + Path.GetFileName(file));
+                }
+                catch (IOException q)
+                {
+                    //When the file already exists in directory
+                    File.Delete(finalDirectory + Path.GetFileName(file));
+                    File.Move(file, finalDirectory + Path.GetFileName(file));
+                    Console.WriteLine(q);
+                }
 
-                  //File.Delete(file);
-              }
-              */
+              //File.Delete(file);
+            }
+         
             if (root == null) return;
             var filename = root.Text;
             FileWriter(mapNode, filename);
@@ -601,7 +511,7 @@ namespace YAMLEditor
         private void timerSaveEvent(object sender, EventArgs e)
         {
             var filename = root.Text;
-           // FileWriter(root, filename);
+            FileWriter(mapNode, filename);
         }
 
         private void mainPropertyGrid_Click(object sender, EventArgs e)

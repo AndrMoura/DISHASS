@@ -1,5 +1,0 @@
-cloud:
-      include_entities:
-      - light.living_room_lights
-
-...
