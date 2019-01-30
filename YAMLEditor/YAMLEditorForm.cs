@@ -644,7 +644,6 @@ namespace YAMLEditor
         {
             if (root == null) return;
             if (nodeSelected == null) return;
-            if (nodeSelected.getID() == 0) return;
             TreeNode[] nodeTreeviewEdit = root.Nodes.Find(nodeSelected.getID().ToString(),true);
             var macro = new MacroCommand();
             remove = new RemoveCommand(ref mapNode, nodeSelected, ref root, nodeTreeviewEdit[0],this);
@@ -656,7 +655,7 @@ namespace YAMLEditor
             mainTreeView.Nodes.Clear();
             mainTreeView.Nodes.Add(root);
             root.Expand();
-            mainTreeView.SelectedNode = root;
+           
         }
 
         public void expandAllNodes(INode node)
