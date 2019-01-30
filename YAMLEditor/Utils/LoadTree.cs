@@ -38,7 +38,7 @@ namespace YAMLEditor.YamlUtils
                     var scalar = child.Value as YamlScalarNode;
                     
                     if (scalar.Tag == "!include")
-                       {
+                    {
                            MappingNode scalarToMapping = (MappingNode) root.AddChild(new MappingNode(scalar.Value, null, ImageLoad.GetImageIndex(scalar), id,root));
                            id++;
                          
@@ -48,13 +48,14 @@ namespace YAMLEditor.YamlUtils
                           //scalarToMapping.AddChild(newRoot);
                           LoadChildren(scalarToMapping, yaml.Documents[0].RootNode as YamlMappingNode);
                           continue;
-                       }
+                    }
 
                     ScalarNode scalarToSave = new ScalarNode(scalar.Value, child, scalar.Tag, ImageLoad.GetImageIndex(scalar), id , root, key.Value);
                     id++;
                     if (scalar.Tag == "!secret")
                        {
                            scalarToSave.Property = scalar.Tag;
+                           scalarToSave.ImageIndex = 2;
 
                        }
                     var node = root.AddChild(scalarToSave);
@@ -120,6 +121,8 @@ namespace YAMLEditor.YamlUtils
                 {
                     ScalarNode scalarChild = (ScalarNode) child;
                     var node = treeNode.Nodes.Add($"{scalarChild.Key}: {scalarChild.Value}");
+                    node.ImageIndex = scalarChild.ImageIndex;
+
                     node.Tag = child.Tag;
 
                 }

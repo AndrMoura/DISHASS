@@ -240,6 +240,10 @@ namespace YAMLEditor
                 vl = new ValueCommand(this, dataGridView1, nodeSelected);  
                 macro.Add(vl);
                 Manager.Execute(macro);
+
+                RefreshAll();
+
+                expandAllNodes(nodeSelected);
             }
 
 
@@ -284,118 +288,136 @@ namespace YAMLEditor
 
         private void toolStripButton2_Click(object sender, EventArgs e)//undo btn
         {
-            
-            Manager.Undo();
-
-            if (nodeSelected is ScalarNode)
+            try
             {
-                ScalarNode temp = (ScalarNode)searchForNode(mapNode, nodeSelected.getID());
+                if (nodeSelected == null) return;
+                Manager.Undo();
 
-                string[] row = new string[] { temp.Key, temp.Value };
-                dataGridView1.Rows.RemoveAt(0);
-                dataGridView1.Rows.Add(row);
-
-                mainTreeView.Nodes.Clear();
-                mainTreeView.Nodes.Add(root);
-                root.Expand();
-                TreeNode node = searchTreeEdit(root, nodeSelected.getParent().getID());
-                if (node == null) return;
-                node.Expand();
-                expandAllNodes(nodeSelected);
-            }
-            else
-            {
-                INode temp = searchForNode(mapNode, nodeSelected.getID());
-                foreach (INode child in temp.Children)
+                if (nodeSelected is ScalarNode)
                 {
-                    if (child is ScalarNode)
-                    {
-                        ScalarNode temp2 = (ScalarNode)child;
-                        string[] row = new string[] { temp2.Key, temp2.Value };
-                        dataGridView1.Rows.RemoveAt(0);
-                        dataGridView1.Rows.Add(row);
-                    }
-                }
+                    ScalarNode temp = (ScalarNode)searchForNode(mapNode, nodeSelected.getID());
 
-                mainTreeView.Nodes.Clear();
-                mainTreeView.Nodes.Add(root);
-                root.Expand();
+                    string[] row = new string[] { temp.Key, temp.Value };
+                    dataGridView1.Rows.RemoveAt(0);
+                    dataGridView1.Rows.Add(row);
 
-                expandAllNodes(nodeSelected);
-
-            }
-            
-
-
-            if (remove != null)
-            {
-                if (RemoveCommand.isValue == true)
-                {
-                  //  mapNode = remove.passRoot();
-                    //root = null;
-                   // root = remove.PassRootTreeNode();
                     mainTreeView.Nodes.Clear();
                     mainTreeView.Nodes.Add(root);
-                    // setNewTreeRoot(root, mapNode);
-                    RemoveCommand.isValue = false;
                     root.Expand();
+                    TreeNode node = searchTreeEdit(root, nodeSelected.getParent().getID());
+                    if (node == null) return;
+                    node.Expand();
+                    expandAllNodes(nodeSelected);
+                }
+                else
+                {
+                    INode temp = searchForNode(mapNode, nodeSelected.getID());
+                    foreach (INode child in temp.Children)
+                    {
+                        if (child is ScalarNode)
+                        {
+                            ScalarNode temp2 = (ScalarNode)child;
+                            string[] row = new string[] { temp2.Key, temp2.Value };
+                            dataGridView1.Rows.RemoveAt(0);
+                            dataGridView1.Rows.Add(row);
+                        }
+                    }
+
+                    mainTreeView.Nodes.Clear();
+                    mainTreeView.Nodes.Add(root);
+                    root.Expand();
+
+                    expandAllNodes(nodeSelected);
+
+                }
+
+
+
+                if (remove != null)
+                {
+                    if (RemoveCommand.isValue == true)
+                    {
+                        //  mapNode = remove.passRoot();
+                        //root = null;
+                        // root = remove.PassRootTreeNode();
+                        mainTreeView.Nodes.Clear();
+                        mainTreeView.Nodes.Add(root);
+                        // setNewTreeRoot(root, mapNode);
+                        RemoveCommand.isValue = false;
+                        root.Expand();
+                    }
                 }
             }
+            catch (Exception exception)
+            {
+                RefreshAll();
+            }
+
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)//redo btn
         {
-            Manager.Redo();
-
-            if (nodeSelected is ScalarNode)
+            try
             {
-                ScalarNode temp = (ScalarNode)searchForNode(mapNode, nodeSelected.getID());
+                if (nodeSelected == null) return;
 
-                string[] row = new string[] { temp.Key, temp.Value };
-                dataGridView1.Rows.RemoveAt(0);
-                dataGridView1.Rows.Add(row);
+                Manager.Redo();
 
-                mainTreeView.Nodes.Clear();
-                mainTreeView.Nodes.Add(root);
-                root.Expand();
-                TreeNode node = searchTreeEdit(root, nodeSelected.getParent().getID());
-                if (node == null) return;
-                node.Expand();
-                expandAllNodes(nodeSelected);
-            }
-            else
-            {
-                INode temp = searchForNode(mapNode, nodeSelected.getID());
-                foreach (INode child in temp.Children)
+                if (nodeSelected is ScalarNode)
                 {
-                    if (child is ScalarNode)
-                    {
-                        ScalarNode temp2 = (ScalarNode)child;
-                        string[] row = new string[] { temp2.Key, temp2.Value };
-                        dataGridView1.Rows.RemoveAt(0);
-                        dataGridView1.Rows.Add(row);
-                    }
-                }
-                mainTreeView.Nodes.Clear();
-                mainTreeView.Nodes.Add(root);
-                root.Expand();
-                expandAllNodes(nodeSelected);
-            }
+                    ScalarNode temp = (ScalarNode)searchForNode(mapNode, nodeSelected.getID());
 
-            if (remove != null)
-            {
-                if (RemoveCommand.isValue == true)
-                {
-                  //  mapNode = remove.passRoot();
-                    //root = null;
-                   // root = remove.PassRootTreeNode();
+                    string[] row = new string[] { temp.Key, temp.Value };
+                    dataGridView1.Rows.RemoveAt(0);
+                    dataGridView1.Rows.Add(row);
+
                     mainTreeView.Nodes.Clear();
                     mainTreeView.Nodes.Add(root);
-                    // setNewTreeRoot(root, mapNode);
-                    RemoveCommand.isValue = false;
                     root.Expand();
+                    TreeNode node = searchTreeEdit(root, nodeSelected.getParent().getID());
+                    if (node == null) return;
+                    node.Expand();
+                    expandAllNodes(nodeSelected);
+                }
+                else
+                {
+                    INode temp = searchForNode(mapNode, nodeSelected.getID());
+                    foreach (INode child in temp.Children)
+                    {
+                        if (child is ScalarNode)
+                        {
+                            ScalarNode temp2 = (ScalarNode)child;
+                            string[] row = new string[] { temp2.Key, temp2.Value };
+                            dataGridView1.Rows.RemoveAt(0);
+                            dataGridView1.Rows.Add(row);
+                        }
+                    }
+                    mainTreeView.Nodes.Clear();
+                    mainTreeView.Nodes.Add(root);
+                    root.Expand();
+                    expandAllNodes(nodeSelected);
+                }
+
+                if (remove != null)
+                {
+                    if (RemoveCommand.isValue == true)
+                    {
+                        //  mapNode = remove.passRoot();
+                        //root = null;
+                        // root = remove.PassRootTreeNode();
+                        mainTreeView.Nodes.Clear();
+                        mainTreeView.Nodes.Add(root);
+                        // setNewTreeRoot(root, mapNode);
+                        RemoveCommand.isValue = false;
+                        root.Expand();
+                    }
                 }
             }
+            catch (Exception exception)
+            {
+                RefreshAll();
+            }
+            
 
         }
 
@@ -590,7 +612,7 @@ namespace YAMLEditor
         private void btnRemove_Click(object sender, EventArgs e)//button remove
         {
             if (root == null) return;
-            
+            if (nodeSelected == null) return;
             TreeNode[] nodeTreeviewEdit = root.Nodes.Find(nodeSelected.getID().ToString(),true);
             var macro = new MacroCommand();
             remove = new RemoveCommand(ref mapNode, nodeSelected, ref root, nodeTreeviewEdit[0],this);
@@ -602,13 +624,13 @@ namespace YAMLEditor
             mainTreeView.Nodes.Clear();
             mainTreeView.Nodes.Add(root);
             root.Expand();
-
+           
         }
 
         public void expandAllNodes(INode node)
         {
             TreeNode treeNode = searchTreeEdit(root, node.getParent().getID());
-            if (node.getParent().Tag != null)
+            if (node.getParent().getID() != 0)
             {
                 treeNode.Expand();
                 expandAllNodes(node.getParent());
@@ -651,11 +673,20 @@ namespace YAMLEditor
                wizard = new WizardComponent(this, nodeSelected.Value.ToString());
 
             }
+
+
+
+            DialogResult dialogResult = wizard.ShowDialog();
+            if (dialogResult == DialogResult.Cancel) return;
             
-            
-            
-            wizard.ShowDialog();
             wizard.tableData();
+            RefreshAll();
+
+
+        }
+
+        public void RefreshAll()
+        {
             if (root == null) return;
             var filename = root.Text;
             FileWriter(mapNode, filename);
@@ -679,8 +710,10 @@ namespace YAMLEditor
             mainTreeView.Nodes.Add(root);
             setTreeId(root);
             root.Expand();
+            
+
+
         }
-    
-        
+ 
     }
 }

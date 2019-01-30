@@ -63,6 +63,24 @@ panel_custom:
   sidebar_title: No love
   sidebar_icon: mdi:heart-off
   webcomponent_path: /home/homeassistant/.homeassistant/panels/no-love.html
+zone:
+  name: Home
+  latitude: latitude_home
+  longitude: longitude_home
+  radius: 200
+  icon: mdi:home
+zone 2:
+  name: Buckhead
+  latitude: latitude_buckhead
+  longitude: longitude_buckhead
+  radius: 200
+  icon: mdi:school
+zone 3:
+  name: Downtown
+  latitude: latitude_downtown
+  longitude: longitude_downtown
+  radius: 200
+  icon: mdi:school
 zwave:
   usb_path: /dev/ttyACM0
   network_key: zwave_network_key
@@ -118,7 +136,6 @@ alarm_control_panel:
   event_arm_away: arlo_alarm_arm_away
   event_disarm: arlo_alarm_disarm
   optimistic: true
-- {}
 xiaomi_aqara:
   gateways:
   - key: xiaomikey
@@ -521,47 +538,4 @@ frontend.yaml: {}
 recorder.yaml: {}
 logbook.yaml: {}
 history.yaml: {}
-zone 2:
-- name: Buckhead
-  latitude: latitude_buckhead
-  longitude: longitude_buckhead
-  radius: 200
-  icon: mdi:school
-  zone2:
-    1: 2
-- 1: 2
-zone 3:
-- name: Downtown
-  latitude: latitude_downtown
-  longitude: longitude_downtown
-  radius: 200
-  icon: mdi:school
-  teste:
-  - 1: t
-  - w: wq
-- 12: 12
-ihc:
-- url: httpddddd
-  username: qwq
-  info: true
-  '': {}
-- ggh: ghgh
-- e: e
-- 2: 2
-- 1: 66
-  kkkk:
-  - jn: u
-  - bn: bn
-  bbb:
-    3: u
-- - - q: w
-  - - uh: i
-  - - fgf: fgfg
-      bbb:
-        b: b
-    - b: vbbv
-  - 444: 444
-- nnnn: nnnnn
-- 22: uuuu
-- {}
 ...

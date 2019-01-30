@@ -27,6 +27,7 @@ namespace YAMLEditor
             {
                 textBox1.ReadOnly = true;
             }
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
         }
 
@@ -57,6 +58,12 @@ namespace YAMLEditor
                 }
                 else if (nodeFound is MappingNode)
                 {
+                    if (ComponentName == nodeFound.Value && nodeFound.getParent() is SequenceNode)
+                    {
+                        MessageBox.Show("Can not add a new component with this name to this component", "Invalid operation",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                     map = (MappingNode)nodeFound;
                     MappingNode tempMap = map.DeepClone();
                     map.RemoveNode(map);

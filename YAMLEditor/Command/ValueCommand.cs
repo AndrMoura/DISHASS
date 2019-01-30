@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using YAMLEditor.Composite;
-
+using YAMLEditor.YamlUtils;
 
 namespace YAMLEditor.Command
 {
@@ -51,6 +51,7 @@ namespace YAMLEditor.Command
             if (dataGridView != null)
             {
                 int index = 0;
+
                 foreach (INode child in updateNodeGlobal.Children)
                 {
                     if (child is ScalarNode)
@@ -69,6 +70,23 @@ namespace YAMLEditor.Command
                     index++;
 
                 }
+
+                if (dataGridView.Rows.Count > updateNodeGlobal.Children.Count)
+                {
+                    int numNewScalar = dataGridView.Rows.Count - updateNodeGlobal.Children.Count-1;
+
+                    for (int i = 0; i < numNewScalar; i++)
+                    {
+                        var key = dataGridView.Rows[index].Cells[0].EditedFormattedValue.ToString();
+                        var value = dataGridView.Rows[index].Cells[1].EditedFormattedValue.ToString();
+                        index++;
+                        
+
+                        ScalarNode scalar = new ScalarNode(value,null,null,0,LoadTree.id++, updateNodeGlobal,key);
+                        editor.nodeSelected.AddChild(scalar);
+                    }
+                }
+
             }
             else
             {

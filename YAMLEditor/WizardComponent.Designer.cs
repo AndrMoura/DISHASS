@@ -54,7 +54,7 @@
             this.stepWizardControl1.Size = new System.Drawing.Size(800, 450);
             this.stepWizardControl1.StepListFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
             this.stepWizardControl1.TabIndex = 0;
-            this.stepWizardControl1.Text = "Wizard Title";
+            this.stepWizardControl1.Title = "Add new component";
             // 
             // wizardPage1
             // 
@@ -62,9 +62,9 @@
             this.wizardPage1.Controls.Add(this.textBox1);
             this.wizardPage1.Name = "wizardPage1";
             this.wizardPage1.Size = new System.Drawing.Size(602, 296);
-            this.stepWizardControl1.SetStepText(this.wizardPage1, "Page Title");
+            this.stepWizardControl1.SetStepText(this.wizardPage1, "1. Component name");
             this.wizardPage1.TabIndex = 2;
-            this.wizardPage1.Text = "Page Title";
+            this.wizardPage1.Text = "1. Component name";
             // 
             // textBox1
             // 
@@ -79,9 +79,9 @@
             this.wizardPage2.IsFinishPage = true;
             this.wizardPage2.Name = "wizardPage2";
             this.wizardPage2.Size = new System.Drawing.Size(602, 296);
-            this.stepWizardControl1.SetStepText(this.wizardPage2, "Page Title");
+            this.stepWizardControl1.SetStepText(this.wizardPage2, "2. Set properties");
             this.wizardPage2.TabIndex = 3;
-            this.wizardPage2.Text = "Page Title";
+            this.wizardPage2.Text = "2. Set properties";
             // 
             // dataGridView1
             // 
@@ -89,9 +89,10 @@
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Key,
             this.Value});
-            this.dataGridView1.Location = new System.Drawing.Point(3, 44);
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(432, 164);
+            this.dataGridView1.Size = new System.Drawing.Size(602, 296);
             this.dataGridView1.TabIndex = 0;
             // 
             // Key
@@ -107,11 +108,12 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(38, 149);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.World);
+            this.label1.Location = new System.Drawing.Point(198, 107);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 15);
+            this.label1.Size = new System.Drawing.Size(139, 21);
             this.label1.TabIndex = 1;
-            this.label1.Text = "label1";
+            this.label1.Text = "New Component";
             // 
             // WizardComponent
             // 
