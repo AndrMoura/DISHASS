@@ -31,10 +31,11 @@ namespace YAMLEditor
             SequenceNode sec = new SequenceNode();
 
             ComponentName = textBox1.Text;
-
+            
             INode nodeFound = editor.mapNode.searchNodeByName(ComponentName);
-            INode nodeToInsert;
-            if (nodeFound != null)
+            //INode nodeFound = editor.nodeSelected;
+
+            if (nodeFound == editor.nodeSelected)
             {
 
                 if (nodeFound is MappingNode)
@@ -42,28 +43,17 @@ namespace YAMLEditor
                     map = (MappingNode)nodeFound;
                     MappingNode tempMap = map.DeepClone();
                     map.RemoveNode(map);
-
-                    
-                    
+                  
                     sec = new SequenceNode(tempMap.Value, tempMap.Tag,3,LoadTree.id++, tempMap.parent);
-                    //tempMap.parent.AddChild(sec);
-
-
+                    
                     MappingNode mapAntigo = tempMap;
                     mapAntigo.id = LoadTree.id++;
                     sec.AddChild(mapAntigo);
 
-                    MappingNode newMap = new MappingNode(ComponentName,null,4, LoadTree.id++,tempMap.parent);
+                    MappingNode newMap = new MappingNode(ComponentName,null,4, LoadTree.id++,sec);
                     sec.AddChild(newMap);
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
-                    {
-                        string key = row.Cells[0].EditedFormattedValue.ToString();
-                        string value = row.Cells[1].EditedFormattedValue.ToString();
-                        if (key == "" && value == "") continue;
 
-                        ScalarNode scalar = new ScalarNode(value, null, null, 0, LoadTree.id++, map, key);
-                        newMap.AddChild(scalar);
-                    }
+                    getPropertiesFromWizard(newMap, dataGridView1);
                     editor.mapNode.AddChild(sec);
 
                 }
@@ -72,43 +62,34 @@ namespace YAMLEditor
                     sec = (SequenceNode) nodeFound;
                     map = new MappingNode(ComponentName, LoadTree.id++);
                     sec.AddChild(map);
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
-                    {
-                        string key = row.Cells[0].EditedFormattedValue.ToString();
-                        string value = row.Cells[1].EditedFormattedValue.ToString();
-                        if (key == "" && value == "") continue;
-
-                        ScalarNode scalar = new ScalarNode(value, null, null, 0, LoadTree.id++, map, key);
-                        map.AddChild(scalar);
-                    }
-                    //editor.mapNode.AddChild(sec);
-
+                    getPropertiesFromWizard(map, dataGridView1);
                 }
-
-
             }
             else
             {
                 map = new MappingNode(ComponentName, LoadTree.id++);
-                foreach (DataGridViewRow row in dataGridView1.Rows)
-                {
-                    string key = row.Cells[0].EditedFormattedValue.ToString();
-                    string value = row.Cells[1].EditedFormattedValue.ToString();
-                    if (key == "" && value == "") continue;
-
-                    ScalarNode scalar = new ScalarNode(value, null, null, 0, LoadTree.id++, map, key);
-                    map.AddChild(scalar);
-                }
+                getPropertiesFromWizard(map, dataGridView1);
                 editor.mapNode.AddChild(map);
-
             }
 
             //editor.mapNode.SearchNode(mapping);
-
-
-
-            //editor.mapNode.AddChild(sec);
         }
+        /// <summary>
+        /// Gets the elements from wizard, crates the new nodes and add to map node
+        /// </summary>
+        /// <param name="map"></param>
+        /// <param name="dataGridView1"></param>
+        public void getPropertiesFromWizard(MappingNode map,DataGridView dataGridView1)
+        {
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                string key = row.Cells[0].EditedFormattedValue.ToString();
+                string value = row.Cells[1].EditedFormattedValue.ToString();
+                if (key == "" && value == "") continue;
 
+                ScalarNode scalar = new ScalarNode(value, null, null, 0, LoadTree.id++, map, key);
+                map.AddChild(scalar);
+            }
+        }
     }
 }

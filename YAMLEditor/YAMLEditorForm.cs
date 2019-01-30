@@ -31,7 +31,7 @@ namespace YAMLEditor
         public int id = 0;
         private CommandManager Manager = new CommandManager();
         private Timer saveTimer;
-        private INode nodeSelected;
+        public INode nodeSelected;
         private ValueCommand vl;
         private RemoveCommand remove;
 
@@ -123,24 +123,7 @@ namespace YAMLEditor
                 string[] row = new string[] { temp.Key, temp.Value };
                 dataGridView1.Rows.Add(row);
 
-                //dataGridView1.Visible = false;
-                //if (e.Node.Name == "0")
-                //{
-                //    btnRemove.Enabled = false;
-                //}
-                //else
-                //{
-                //    btnRemove.Enabled = true;
-                //}
-                //if (e.Node.Tag == null) return;
-
-                //INode node = searchForNode(mapNode, idNodeToEdit);
-                //if (node is ScalarNode)
-                //{
-                //    ScalarNode scalar = (ScalarNode)searchForNode(mapNode, idNodeToEdit);
-                //    textBoxKey.Text = scalar.Key;
-                //    textBoxValue.Text = scalar.Value;
-                //}
+         
             }
            
         }
@@ -154,6 +137,8 @@ namespace YAMLEditor
 
                 if (raiz.Children == null)
                     return null;
+                if (raiz.id == idNodeToEdit)
+                    nodeSelected = raiz;
 
                 foreach (INode child in raiz.Children)
                 {
@@ -636,6 +621,30 @@ namespace YAMLEditor
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (nodeSelected is ScalarNode || nodeSelected == null)
+            {
+                MessageBox.Show("Select a valid node", "Wrong node selected",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            else
+            {
+                DialogResult dialogResult = MessageBox.Show("Do you want to add new component to: " + nodeSelected.Value, "Node selected",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    initWizard();
+                }
+                else
+                {
+                    return;
+                }
+            }
+    
+        }
+
+        public void initWizard()
+        {
 
             WizardComponent wizard = new WizardComponent(this);
             wizard.ShowDialog();
@@ -664,12 +673,7 @@ namespace YAMLEditor
             setTreeId(root);
             root.Expand();
         }
-
-
-        private void setStruckID(MappingNode node)
-        {
-
-        }
+    
         
     }
 }

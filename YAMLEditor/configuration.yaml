@@ -3,6 +3,7 @@ homeassistant:
   - type: homeassistant
   - type: trusted_networks
   - type: legacy_api_password
+  - 2: 12
   latitude: latitude_home
   longitude: longitude_home
   elevation: 322
@@ -49,10 +50,6 @@ homeassistant:
   - /home/homeassistant/.homeassistant/downloads
   - /tmp
   - /home/homeassistant/.homeassistant/downloads/camera/
-lovelace:
-  mode: yaml
-updater:
-  include_used_components: true
 python_script: ''
 weather:
 - platform: yweather
@@ -63,12 +60,6 @@ panel_custom:
   sidebar_title: No love
   sidebar_icon: mdi:heart-off
   webcomponent_path: /home/homeassistant/.homeassistant/panels/no-love.html
-zone:
-  name: Home
-  latitude: latitude_home
-  longitude: longitude_home
-  radius: 200
-  icon: mdi:home
 zone 2:
   name: Buckhead
   latitude: latitude_buckhead
@@ -544,4 +535,20 @@ BOOM:
   asdasd: asdasd
 - sadasdasdasd: asdasdasdasd
   asdasdasd: asdasdasd
+updater:
+- include_used_components: true
+lovelace:
+- mode: yaml
+- {}
+zone:
+- name: Home
+  latitude: latitude_home
+  longitude: longitude_home
+  radius: 200
+  icon: mdi:home
+- qq: 22
+www:
+  qq: 1
+qqq:
+  ww: q
 ...

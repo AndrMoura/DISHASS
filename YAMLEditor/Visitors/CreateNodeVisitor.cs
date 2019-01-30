@@ -33,10 +33,6 @@ namespace YAMLEditor.Visitors
 
         public YamlSequenceNode Visit(SequenceNode node, YamlNode currentRootNode)
         {
-            if (node.Value == "BOOM")
-            {
-                int i = 0;
-            }
             if (currentRootNode is YamlMappingNode)
             {
                 YamlMappingNode rootNode = (YamlMappingNode)currentRootNode; //downcast
