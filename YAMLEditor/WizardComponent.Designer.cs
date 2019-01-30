@@ -30,11 +30,12 @@
         {
             this.stepWizardControl1 = new AeroWizard.StepWizardControl();
             this.wizardPage1 = new AeroWizard.WizardPage();
-            this.wizardPage2 = new AeroWizard.WizardPage();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.wizardPage2 = new AeroWizard.WizardPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl1)).BeginInit();
             this.wizardPage1.SuspendLayout();
             this.wizardPage2.SuspendLayout();
@@ -57,12 +58,20 @@
             // 
             // wizardPage1
             // 
+            this.wizardPage1.Controls.Add(this.label1);
             this.wizardPage1.Controls.Add(this.textBox1);
             this.wizardPage1.Name = "wizardPage1";
             this.wizardPage1.Size = new System.Drawing.Size(602, 296);
             this.stepWizardControl1.SetStepText(this.wizardPage1, "Page Title");
             this.wizardPage1.TabIndex = 2;
             this.wizardPage1.Text = "Page Title";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(120, 149);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(321, 23);
+            this.textBox1.TabIndex = 0;
             // 
             // wizardPage2
             // 
@@ -73,13 +82,6 @@
             this.stepWizardControl1.SetStepText(this.wizardPage2, "Page Title");
             this.wizardPage2.TabIndex = 3;
             this.wizardPage2.Text = "Page Title";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(120, 149);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 23);
-            this.textBox1.TabIndex = 0;
             // 
             // dataGridView1
             // 
@@ -101,6 +103,15 @@
             // 
             this.Value.HeaderText = "Value";
             this.Value.Name = "Value";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(38, 149);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(38, 15);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "label1";
             // 
             // WizardComponent
             // 
@@ -128,5 +139,6 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Key;
         private System.Windows.Forms.DataGridViewTextBoxColumn Value;
+        private System.Windows.Forms.Label label1;
     }
 }

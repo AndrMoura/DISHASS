@@ -16,12 +16,17 @@ namespace YAMLEditor
     {
         private string ComponentName;
         private YAMLEditorForm editor;
+        
 
-        public WizardComponent(YAMLEditorForm a)
+        public WizardComponent(YAMLEditorForm a, String textBoxName)
         {
             InitializeComponent();
             this.editor = a;
-
+            textBox1.Text = textBoxName;
+            if (!textBoxName.Equals(""))
+            {
+                textBox1.ReadOnly = true;
+            }
 
         }
 
@@ -32,13 +37,25 @@ namespace YAMLEditor
 
             ComponentName = textBox1.Text;
             
-            INode nodeFound = editor.mapNode.searchNodeByName(ComponentName);
-            //INode nodeFound = editor.nodeSelected;
+            //INode nodeFound = editor.mapNode.searchNodeByName(ComponentName);
+            INode nodeFound = editor.nodeSelected;
 
-            if (nodeFound == editor.nodeSelected)
+            if (nodeFound != null)
             {
 
-                if (nodeFound is MappingNode)
+                if(nodeFound == editor.mapNode  )
+                {
+                    map = new MappingNode(ComponentName, LoadTree.id++);
+                    getPropertiesFromWizard(map, dataGridView1);
+                    editor.mapNode.AddChild(map);
+                }             
+                else if (nodeFound.Value != ComponentName)
+                {
+                    map = new MappingNode(ComponentName, null, 4, LoadTree.id++, editor.nodeSelected);
+                    getPropertiesFromWizard(map, dataGridView1);
+                    editor.nodeSelected.AddChild(map);
+                }
+                else if (nodeFound is MappingNode)
                 {
                     map = (MappingNode)nodeFound;
                     MappingNode tempMap = map.DeepClone();
@@ -54,23 +71,18 @@ namespace YAMLEditor
                     sec.AddChild(newMap);
 
                     getPropertiesFromWizard(newMap, dataGridView1);
-                    editor.mapNode.AddChild(sec);
+                    editor.nodeSelected.getParent().AddChild(sec);
 
                 }
                 else if (nodeFound is SequenceNode)
                 {
-                    sec = (SequenceNode) nodeFound;
-                    map = new MappingNode(ComponentName, LoadTree.id++);
-                    sec.AddChild(map);
+
+                    map = new MappingNode(ComponentName, null, 4, LoadTree.id++, editor.nodeSelected);
+                    editor.nodeSelected.AddChild(map);
                     getPropertiesFromWizard(map, dataGridView1);
                 }
             }
-            else
-            {
-                map = new MappingNode(ComponentName, LoadTree.id++);
-                getPropertiesFromWizard(map, dataGridView1);
-                editor.mapNode.AddChild(map);
-            }
+            
 
             //editor.mapNode.SearchNode(mapping);
         }
@@ -91,5 +103,6 @@ namespace YAMLEditor
                 map.AddChild(scalar);
             }
         }
+
     }
 }

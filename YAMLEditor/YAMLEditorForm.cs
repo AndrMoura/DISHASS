@@ -645,8 +645,15 @@ namespace YAMLEditor
 
         public void initWizard()
         {
+            WizardComponent wizard = new WizardComponent(this, "");
+            if (nodeSelected is SequenceNode)
+            {
+               wizard = new WizardComponent(this, nodeSelected.Value.ToString());
 
-            WizardComponent wizard = new WizardComponent(this);
+            }
+            
+            
+            
             wizard.ShowDialog();
             wizard.tableData();
             if (root == null) return;
