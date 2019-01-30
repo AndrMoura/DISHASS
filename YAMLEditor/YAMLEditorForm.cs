@@ -103,7 +103,11 @@ namespace YAMLEditor
                 var yaml = FileHandler.LoadFile(mapNode, dialog.FileName);
 
                 LoadTree.CreateTree(mapNode, yaml.Documents[0].RootNode as YamlMappingNode, root);
+
                 InitTimer();
+
+              
+
                 setTreeId(root);
                 root.Expand();
 
@@ -448,7 +452,9 @@ namespace YAMLEditor
                 RefreshAll();
             }
             
+
         }
+
 
         public void setNewTreeRoot(TreeNode root, MappingNode mapingNode)
         {
@@ -506,6 +512,8 @@ namespace YAMLEditor
             using (TextWriter writer = File.CreateText(@"..\\Config_Files\\bin\\"+ filename))
                 yaml.Save(writer, false);
         }
+       
+
 
         /// <summary>
         /// On save button click the data in bin/debug is sen
@@ -525,25 +533,6 @@ namespace YAMLEditor
                 File.Delete(file);
             }
 
-
-            //if (recoveryFiles.Count() < 1) return;
-            //foreach (var file in recoveryFiles)
-            //{
-            //    try
-            //    {
-            //      File.Move(file, finalDirectory + Path.GetFileName(file));
-            //    }
-            //    catch (IOException q)
-            //    {
-            //        //When the file already exists in directory
-            //        File.Delete(finalDirectory + Path.GetFileName(file));
-            //        File.Move(file, finalDirectory + Path.GetFileName(file));
-            //        Console.WriteLine(q);
-            //    }
-
-            //  //File.Delete(file);
-            //}
-         
             if (root == null) return;
             var filename = root.Text;
             FileWriter(mapNode, filename);
@@ -565,7 +554,10 @@ namespace YAMLEditor
         private void timerSaveEvent(object sender, EventArgs e)
         {
             var filename = root.Text;
+
             FileWriter2(mapNode, filename);
+
+           // FileWriter(root, filename);
         }
 
         private void mainPropertyGrid_Click(object sender, EventArgs e)
@@ -577,7 +569,6 @@ namespace YAMLEditor
         {
             if (root == null) return;
             if (nodeSelected == null) return;
-            if (nodeSelected.getID() == 0) return;
             TreeNode[] nodeTreeviewEdit = root.Nodes.Find(nodeSelected.getID().ToString(),true);
             var macro = new MacroCommand();
             remove = new RemoveCommand(ref mapNode, nodeSelected, ref root, nodeTreeviewEdit[0],this);
@@ -589,7 +580,7 @@ namespace YAMLEditor
             mainTreeView.Nodes.Clear();
             mainTreeView.Nodes.Add(root);
             root.Expand();
-            mainTreeView.SelectedNode = root;
+           
         }
 
         public void expandAllNodes(INode node)
