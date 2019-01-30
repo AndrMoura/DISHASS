@@ -38,6 +38,7 @@ namespace YAMLEditor
         public YAMLEditorForm()
         {
             InitializeComponent();
+            
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
           
          
@@ -49,7 +50,35 @@ namespace YAMLEditor
         }
 
         private void OnOpen(object sender, EventArgs e)
-        {       
+        {
+            var recoveryFiles = Directory.GetFiles(@"..\\..\\Config_Files\\bin", "*.yaml");
+            if (recoveryFiles != null)
+            {
+                if (recoveryFiles.Count() > 0)
+                {
+                    DialogResult dialogResult = MessageBox.Show("You have unrecovered files do you wish to restore them: ", "Files Found!",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    var finalDirectory = @".\\";
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        foreach (var file in recoveryFiles)
+                        {
+                            try
+                            {
+                                File.Move(file, finalDirectory + Path.GetFileName(file));
+                            }
+                            catch(IOException q)
+                            {
+                                File.Delete(finalDirectory + Path.GetFileName(file));
+                                File.Move(file, finalDirectory + Path.GetFileName(file));
+                            }
+                        }
+                    }
+                    
+                }
+            }
+           
             dialog = new OpenFileDialog()
             { Filter = @"Yaml files (*.yaml)|*.yaml|All files (*.*)|*.*", DefaultExt = "yaml" };
 
@@ -74,7 +103,7 @@ namespace YAMLEditor
                 var yaml = FileHandler.LoadFile(mapNode, dialog.FileName);
 
                 LoadTree.CreateTree(mapNode, yaml.Documents[0].RootNode as YamlMappingNode, root);
-                //InitTimer();
+                InitTimer();
                 setTreeId(root);
                 root.Expand();
 
@@ -461,7 +490,22 @@ namespace YAMLEditor
                 yaml.Save(writer, false);
         }
 
-   
+        public static void FileWriter2(MappingNode n, string filename) //para auto-save
+        {
+            n.IsRoot = true;
+
+            YamlMappingNode rootNode = new YamlMappingNode();
+
+            CreateNodeVisitor visitor = new CreateNodeVisitor();
+            //SaveTree.saveChildrenMapping(n, rootNode);
+            n.Accept(visitor, rootNode);
+
+            YamlDocument doc = new YamlDocument(rootNode);
+            var yaml = new YamlStream(doc);
+
+            using (TextWriter writer = File.CreateText(@"..\\Config_Files\\bin\\"+ filename))
+                yaml.Save(writer, false);
+        }
 
         /// <summary>
         /// On save button click the data in bin/debug is sen
@@ -473,7 +517,14 @@ namespace YAMLEditor
             //Console.WriteLine("asdasdsad" + Application.StartupPath);
             //save final: copiamos os ficheiros da pasta recovery para a pasta final(Config_files)
             var finalDirectory = @".\\";
-            var recoveryFiles = Directory.GetFiles(@".\\bin\\", "*.yaml");
+            var recoveryFiles = Directory.GetFiles(@".\\bin", "*.yaml");
+
+            if (recoveryFiles.Count() < 1) return;
+            foreach (var file in recoveryFiles)
+            {
+                File.Delete(file);
+            }
+
 
             //if (recoveryFiles.Count() < 1) return;
             //foreach (var file in recoveryFiles)
@@ -514,7 +565,7 @@ namespace YAMLEditor
         private void timerSaveEvent(object sender, EventArgs e)
         {
             var filename = root.Text;
-            FileWriter(mapNode, filename);
+            FileWriter2(mapNode, filename);
         }
 
         private void mainPropertyGrid_Click(object sender, EventArgs e)

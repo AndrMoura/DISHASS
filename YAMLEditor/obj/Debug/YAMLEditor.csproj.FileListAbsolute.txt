@@ -1,0 +1,16 @@
+C:\Users\HP-Work\Source\Repos\DISHASS6\YAMLEditor\bin\Debug\YAMLEditor.exe.config
+C:\Users\HP-Work\Source\Repos\DISHASS6\YAMLEditor\bin\Debug\YAMLEditor.exe
+C:\Users\HP-Work\Source\Repos\DISHASS6\YAMLEditor\bin\Debug\YAMLEditor.pdb
+C:\Users\HP-Work\Source\Repos\DISHASS6\YAMLEditor\bin\Debug\AeroWizard.dll
+C:\Users\HP-Work\Source\Repos\DISHASS6\YAMLEditor\bin\Debug\YamlDotNet.dll
+C:\Users\HP-Work\Source\Repos\DISHASS6\YAMLEditor\bin\Debug\AeroWizard.xml
+C:\Users\HP-Work\Source\Repos\DISHASS6\YAMLEditor\bin\Debug\YamlDotNet.xml
+C:\Users\HP-Work\Source\Repos\DISHASS6\YAMLEditor\obj\Debug\YAMLEditor.csprojAssemblyReference.cache
+C:\Users\HP-Work\Source\Repos\DISHASS6\YAMLEditor\obj\Debug\YAMLEditor.WizardComponent.resources
+C:\Users\HP-Work\Source\Repos\DISHASS6\YAMLEditor\obj\Debug\YAMLEditor.YAMLEditorForm.resources
+C:\Users\HP-Work\Source\Repos\DISHASS6\YAMLEditor\obj\Debug\YAMLEditor.Properties.Resources.resources
+C:\Users\HP-Work\Source\Repos\DISHASS6\YAMLEditor\obj\Debug\YAMLEditor.csproj.GenerateResource.cache
+C:\Users\HP-Work\Source\Repos\DISHASS6\YAMLEditor\obj\Debug\YAMLEditor.csproj.CoreCompileInputs.cache
+C:\Users\HP-Work\Source\Repos\DISHASS6\YAMLEditor\obj\Debug\YAMLEditor.csproj.CopyComplete
+C:\Users\HP-Work\Source\Repos\DISHASS6\YAMLEditor\obj\Debug\YAMLEditor.exe
+C:\Users\HP-Work\Source\Repos\DISHASS6\YAMLEditor\obj\Debug\YAMLEditor.pdb
