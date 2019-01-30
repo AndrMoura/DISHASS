@@ -34,10 +34,9 @@ homeassistant:
   - /home/homeassistant/.homeassistant/downloads
   - /tmp
   - /home/homeassistant/.homeassistant/downloads/camera/
-lovelace:
-  mode: yamlllll
 updater:
   include_used_components: true
+  Lol: fff
 python_script: ''
 weather:
 - platform: yweather
@@ -523,4 +522,7 @@ frontend.yaml: {}
 recorder.yaml: {}
 logbook.yaml: {}
 history.yaml: {}
+lovelace:
+- mode: yamlllll
+- asd: asd
 ...
