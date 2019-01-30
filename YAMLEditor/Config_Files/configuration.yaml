@@ -10,8 +10,13 @@ homeassistant:
   temperature_unit: F
   time_zone: America/New_York
   unit_system: imperial
+<<<<<<< HEAD
   customize.yaml: !include customize.yaml
   customize_glob.yaml: {}
+=======
+  customize: !include customize.yaml
+  customize_glob: !include customize_glob.yaml
+>>>>>>> parent of 702c484... .
   packages: packages
   whitelist_external_dirs:
   - /home/homeassistant/.homeassistant/downloads
@@ -488,22 +493,22 @@ mqtt:
   password: !secret mqtt_password
 alexa: ''
 dialogflow: ''
-intent_script.yaml: {}
-ios.yaml: {}
-alert.yaml: {}
-automations.yaml: {}
-cover.yaml: {}
-groups.yaml: {}
-scripts.yaml: {}
-sensor.yaml: {}
-switches.yaml: {}
-binary_sensor.yaml: {}
-input_select.yaml: {}
-input_boolean.yaml: {}
-input_number.yaml: {}
-input_text.yaml: {}
-frontend.yaml: {}
-recorder.yaml: {}
-logbook.yaml: {}
-history.yaml: {}
+intent_script: !include intent_script.yaml
+ios: !include ios.yaml
+alert: !include alert.yaml
+automation: !include automations.yaml
+cover: !include cover.yaml
+group: !include groups.yaml
+script: !include scripts.yaml
+sensor: !include sensor.yaml
+switch: !include switches.yaml
+binary_sensor: !include binary_sensor.yaml
+input_select: !include input_select.yaml
+input_boolean: !include input_boolean.yaml
+input_number: !include input_number.yaml
+input_text: !include input_text.yaml
+frontend: !include frontend.yaml
+recorder: !include recorder.yaml
+logbook: !include logbook.yaml
+history: !include history.yaml
 ...
