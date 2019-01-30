@@ -26,18 +26,17 @@ homeassistant:
         - script.tv_youtube_on
         include_domains:
         - cover
-  sdsds:
-    a: s
   customize_glob.yaml: {}
   packages: packages
   whitelist_external_dirs:
   - /home/homeassistant/.homeassistant/downloads
   - /tmp
   - /home/homeassistant/.homeassistant/downloads/camera/
+lovelace:
+  mode: yaml
 updater:
   include_used_components: true
-  Lol: fff
-python_script: ''
+python_script: 1
 weather:
 - platform: yweather
   name: yweather
@@ -48,7 +47,7 @@ panel_custom:
   sidebar_icon: mdi:heart-off
   webcomponent_path: /home/homeassistant/.homeassistant/panels/no-love.html
 zone:
-  name: Home
+  name: Home22
   latitude: !secret latitude_home
   longitude: !secret longitude_home
   radius: 200
@@ -522,7 +521,4 @@ frontend.yaml: {}
 recorder.yaml: {}
 logbook.yaml: {}
 history.yaml: {}
-lovelace:
-- mode: yamlllll
-- asd: asd
 ...

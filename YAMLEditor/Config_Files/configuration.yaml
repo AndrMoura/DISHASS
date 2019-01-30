@@ -36,7 +36,7 @@ lovelace:
   mode: yaml
 updater:
   include_used_components: true
-python_script: ''
+python_script: 1
 weather:
 - platform: yweather
   name: yweather

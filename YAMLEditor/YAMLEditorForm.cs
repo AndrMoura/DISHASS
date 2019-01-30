@@ -16,7 +16,7 @@ using YamlDotNet.RepresentationModel;
 using YAMLEditor.Command;
 using YAMLEditor.Composite;
 using YAMLEditor.LoadYaml;
-using YAMLEditor.Utils;
+
 using YAMLEditor.Visitors;
 using YAMLEditor.YamlUtils;
 
@@ -522,6 +522,7 @@ namespace YAMLEditor
         /// <param name="e"></param>
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (root == null) return;
             //Console.WriteLine("asdasdsad" + Application.StartupPath);
             //save final: copiamos os ficheiros da pasta recovery para a pasta final(Config_files)
             var finalDirectory = @".\\";
