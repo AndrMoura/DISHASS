@@ -68,12 +68,6 @@
     <Compile Include="FunctionAux.cs" />
     <Compile Include="LoadYaml\FileHandler.cs" />
     <Compile Include="LoadYaml\ImageLoad.cs" />
-    <Compile Include="LoadYaml\INodeLoader.cs" />
-    <Compile Include="LoadYaml\MapLoader.cs" />
-    <Compile Include="LoadYaml\NodeLoader.cs" />
-    <Compile Include="LoadYaml\SequenceLoader.cs" />
-    <Compile Include="Utils\SaveDelegate.cs" />
-    <Compile Include="Utils\SaveTree.cs" />
     <Compile Include="Visitors\CreateNodeVisitor.cs" />
     <Compile Include="Visitors\Visitor.cs" />
     <Compile Include="WizardComponent.cs">
