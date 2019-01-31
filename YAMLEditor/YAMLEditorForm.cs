@@ -51,7 +51,16 @@ namespace YAMLEditor
 
         private void OnOpen(object sender, EventArgs e)
         {
-            var recoveryFiles = Directory.GetFiles(@"..\\..\\Config_Files\\bin", "*.yaml");
+            string[] recoveryFiles = null;
+            try
+            {
+                recoveryFiles = Directory.GetFiles(@"..\\..\\Config_Files\\bin", "*.yaml");
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+            }
+            
             if (recoveryFiles != null)
             {
                 if (recoveryFiles.Count() > 0)
